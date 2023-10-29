@@ -19,7 +19,7 @@ int	main(int argc, char **argv)
 {
 	int finished;
 
-	if (argc == 5)
+	if (argc == 2)
 	{
 		
 

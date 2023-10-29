@@ -4,12 +4,14 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 
 typedef struct s_philo {
 
 	int	philo;
 	int *finished;
+	int count;
 	// int	n_forks;
 	// int	time_to_die;
 	// int	time_to_eat;
@@ -18,7 +20,8 @@ typedef struct s_philo {
 	// int i;
 	// int single_philosopher;
 	// int	action;
-	pthread_mutex_t lock;
+	pthread_mutex_t *fork_1;
+	pthread_mutex_t *fork_2;
 	// int	index;
 }	t_philo;
 
