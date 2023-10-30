@@ -29,7 +29,7 @@ typedef struct s_philo {
 int ft_atoi(const char *str);
 
 //start program
-void create_threads(int count);
+void create_threads(int count, t_philo **array);
 
 
 

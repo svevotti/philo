@@ -17,7 +17,9 @@
 
 int	main(int argc, char **argv)
 {
-	int finished;
+	t_philo	ptr;
+	t_philo **array;
+	int	time;
 
 	if (argc == 2)
 	{
@@ -30,17 +32,24 @@ int	main(int argc, char **argv)
 		// if (check_argv(ptr) == 0)
 		// 	printf("Error, something is missing or you just didn't understand the assigment!\n");
 		printf("Parent is starting\n");
-		finished = 0;
-		create_threads(ft_atoi(argv[1]), &finished);
+		array = (t_philo **)malloc(sizeof(t_philo *) * ft_atoi(argv[1]));
+		create_threads(ft_atoi(argv[1]), array);
+		int count = 0;
+		while (count <  ft_atoi(argv[1]))
+		{
+			printf("%d\n", array[count]->philo);
+			count++;
+		}
+		exit(0);
 		while (1)
 		{
 			printf("parent is checking\n");
-			if (finished == 1)
+
+			if (ptr.time.tv_sec < time)
 				break ;
-			sleep(1);
+			usleep(1000000);
 		}
 		printf("parent is done\n");
-		// printf("%d, %d, %d, %d\n", ptr.n_philos, ptr.time_to_die, ptr.time_to_eat, ptr.time_to_sleep);
 	}
 	else
 		printf("Error, something is missing or you just didn't understand the assigment!\n");

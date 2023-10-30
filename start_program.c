@@ -14,7 +14,7 @@ float	convert_in_milliseconds(int time)
 void	think_life(t_philo *ptr)
 {
 	printf("philosopher %d is thinking\n", ptr->philo);
-	sleep(1);
+	usleep(1000000);
 }
 
 void	take_a_nap(t_philo *ptr)
@@ -51,12 +51,12 @@ void	*routine(void *param)
 		eat_spaghetti(ptr);
 		// think_life(ptr);
 		// take_a_nap(ptr);
-		sleep(1);
+		usleep(1000000);
 	}
 	return NULL;
 }
 
-void create_threads(int count)
+void create_threads(int count, t_philo **array)
 {
 	pthread_t	thread;
 	t_philo		*philosopher;
@@ -81,6 +81,7 @@ void create_threads(int count)
 		pthread_mutex_init(philosopher->fork_2, NULL);
 		last_fork = philosopher->fork_2;
 		pthread_create(&thread, NULL, routine, philosopher);
+		array[index] = philosopher;
 		index++;
 	}
 }
