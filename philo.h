@@ -10,8 +10,8 @@
 typedef struct s_philo {
 
 	int	philo;
-	int *finished;
 	int count;
+	struct timeval time;
 	// int	n_forks;
 	// int	time_to_die;
 	// int	time_to_eat;
@@ -29,7 +29,7 @@ typedef struct s_philo {
 int ft_atoi(const char *str);
 
 //start program
-void create_threads(int count, int *finished);
+void create_threads(int count);
 
 
 

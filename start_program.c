@@ -3,32 +3,41 @@
 #include <pthread.h>
 
 
-// typedef struct s_single_philo {
-// 	int philosopher;
-// 	int	action;
-// } 	t_single_philo;
+float	convert_in_milliseconds(int time)
+{
+	float	time_ms;
+
+	time_ms = time / (float)1000;
+	return (time_ms);
+}
 
 void	think_life(t_philo *ptr)
 {
 	printf("philosopher %d is thinking\n", ptr->philo);
-	// ptr->action = 1;
 	sleep(1);
 }
 
 void	take_a_nap(t_philo *ptr)
 {
+	struct timeval time_1;
+	struct timeval time_2;
+
+	gettimeofday(NULL, &time_1);
 	printf("philosopher %d is sleeping\n", ptr->philo);
-	
+	usleep(200);
+	gettimeofday(NULL, &time_2);
+
 	sleep(1);
 }
 
 void eat_spaghetti(t_philo *ptr)
 {
+	
 	pthread_mutex_lock(ptr->fork_1);
 	pthread_mutex_lock(ptr->fork_2);
-	printf("philosopher %d is eating spaghetti\n", ptr->philo);
-	sleep(1);
-	// sleep(ptr->time_to_eat);
+	usleep(1000000);
+	gettimeofday(&(ptr->time), NULL);
+	printf("stamp after eating %ld - %d\n", ptr->time.tv_sec, ptr->time.tv_usec);
 	pthread_mutex_unlock(ptr->fork_1);
 	pthread_mutex_unlock(ptr->fork_2);
 }
@@ -39,20 +48,15 @@ void	*routine(void *param)
 
 	ptr = (t_philo *)param;
 	while (1) {
-		// pthread_mutex_lock(ptr->fork_1);
-		// pthread_mutex_lock(ptr->fork_2);
-		// printf("thread %d is in the function\n", ptr->philo);
-		// pthread_mutex_unlock(ptr->fork_1);
-		// pthread_mutex_unlock(ptr->fork_2);
 		eat_spaghetti(ptr);
-		think_life(ptr);
-		take_a_nap(ptr);
+		// think_life(ptr);
+		// take_a_nap(ptr);
 		sleep(1);
 	}
 	return NULL;
 }
 
-void create_threads(int count, int *finished)
+void create_threads(int count)
 {
 	pthread_t	thread;
 	t_philo		*philosopher;
@@ -66,7 +70,6 @@ void create_threads(int count, int *finished)
 	{
 		philosopher = (t_philo *)malloc(sizeof(t_philo));
 		philosopher->philo = index;
-		philosopher->finished = finished;
 		if (last_fork == NULL)
 		{
 			philosopher->fork_1 = malloc(sizeof(pthread_mutex_t));
