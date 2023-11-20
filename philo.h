@@ -6,30 +6,30 @@
 # include <pthread.h>
 # include <sys/time.h>
 
+#define ALIVE 0
+#define DEAD 1
+
+typedef struct s_info {
+	int n_philo;
+	unsigned long time_to_die;
+	unsigned long	time_to_eat;
+	unsigned long	time_to_sleep;
+	unsigned long	time_to_think;
+}				t_info;
 
 typedef struct s_philo {
-
-	int	philo;
-	int count;
+	int index;
 	struct timeval time;
-	// int	n_forks;
-	// int	time_to_die;
-	// int	time_to_eat;
-	// int	time_to_sleep;
-	// int	time_to_think;
-	// int i;
-	// int single_philosopher;
-	// int	action;
 	pthread_mutex_t *fork_1;
 	pthread_mutex_t *fork_2;
-	// int	index;
-}	t_philo;
+	t_info	*info;
+}				t_philo;			
 
 //converstion_argv
 int ft_atoi(const char *str);
 
 //start program
-void create_threads(int count, t_philo **array);
+void create_threads(t_info *info, t_philo **array);
 
 
 
