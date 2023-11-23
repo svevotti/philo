@@ -2,15 +2,6 @@
 #include <stdio.h>
 #include <pthread.h>
 
-
-float	convert_in_milliseconds(int time)
-{
-	float	time_ms;
-
-	time_ms = time / (float)1000;
-	return (time_ms);
-}
-
 void	think_life(t_philo *ptr)
 {
 	printf("philosopher %d is thinking\n", ptr->index);
@@ -34,7 +25,7 @@ void eat_spaghetti(t_philo *ptr)
 {	
 	pthread_mutex_lock(ptr->fork_1);
 	pthread_mutex_lock(ptr->fork_2);
-	usleep(1000000);
+	usleep(ptr->info->time_to_eat * 1000);
 	gettimeofday(&(ptr->time), NULL);
 	printf("last ate %lu\n", ptr->time.tv_sec);
 	pthread_mutex_unlock(ptr->fork_1);
@@ -48,7 +39,7 @@ void	*routine(void *param)
 	ptr = (t_philo *)param;
 	while (1) {
 		eat_spaghetti(ptr);
-		usleep(1000000);
+		usleep(1000000000);
 	}
 	return NULL;
 }

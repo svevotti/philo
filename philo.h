@@ -9,6 +9,7 @@
 #define ALIVE 0
 #define DEAD 1
 
+
 typedef struct s_info {
 	int n_philo;
 	unsigned long time_to_die;

@@ -50,8 +50,6 @@ int	main(int argc, char **argv)
 		{
 			printf("parent is checking\n");
 			gettimeofday(&time, NULL);
-			// e_msec = time.tv_sec * 1000;
-			//printf("current time %lu\n", e_msec);
 			while (i < info.n_philo)
 			{
 				if (is_alive(array[i], time, info.time_to_die) == 1)
