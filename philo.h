@@ -8,6 +8,8 @@
 
 #define ALIVE 0
 #define DEAD 1
+#define EATING 0
+#define NOT_EATING 0
 
 
 typedef struct s_info {
@@ -21,9 +23,10 @@ typedef struct s_info {
 typedef struct s_philo {
 	int index;
 	struct timeval time;
-	pthread_mutex_t *fork_1;
-	pthread_mutex_t *fork_2;
+	pthread_mutex_t *left_fork;
+	pthread_mutex_t *right_fork;
 	t_info	*info;
+	int	status;
 }				t_philo;			
 
 //converstion_argv
