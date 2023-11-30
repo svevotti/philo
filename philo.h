@@ -9,15 +9,15 @@
 #define ALIVE 0
 #define DEAD 1
 #define EATING 0
-#define NOT_EATING 0
+#define NOT_EATING 1
 
 
 typedef struct s_info {
 	int n_philo;
-	unsigned long time_to_die;
-	unsigned long	time_to_eat;
-	unsigned long	time_to_sleep;
-	unsigned long	time_to_think;
+	unsigned int	time_to_die;
+	unsigned int	time_to_eat;
+	unsigned int	time_to_sleep;
+	unsigned int	time_to_think;
 }				t_info;
 
 typedef struct s_philo {
@@ -34,18 +34,5 @@ int ft_atoi(const char *str);
 
 //start program
 void create_threads(t_info *info, t_philo **array);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #endif

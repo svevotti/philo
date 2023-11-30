@@ -1,13 +1,13 @@
 #include "philo.h"
 
-int find_multi(const char *str);
-int find_digits(const char *str);
+int	find_multi(const char *str);
+int	find_digits(const char *str);
 
-int ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
-	int digit;
-	int m;
-	int number;
+	int	digit;
+	int	m;
+	int	number;
 
 	m = find_multi(str);
 	if (m == 0)
@@ -22,9 +22,9 @@ int ft_atoi(const char *str)
 	return (number);
 }
 
-int find_digits(const char *str)
+int	find_digits(const char *str)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (*str != '\0')
@@ -38,10 +38,10 @@ int find_digits(const char *str)
 	return (count);
 }
 
-int find_multi(const char *str)
+int	find_multi(const char *str)
 {
-	int digits;
-	int m;
+	int	digits;
+	int	m;
 
 	digits = find_digits(str);
 	if (digits == 0)
@@ -54,5 +54,5 @@ int find_multi(const char *str)
 		m *= 10;
 		digits--;
 	}
-	return (m);	
+	return (m);
 }
