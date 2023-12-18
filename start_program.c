@@ -37,6 +37,7 @@ void eat_spaghetti(t_philo *ptr)
 	if (time_stamp_fork.tv_usec % 1000 > 500)
 		time_stamp_ms += 1;
 	printf("%lu philosopher %d has taken a fork\n", time_stamp_ms, ptr->index);
+	gettimeofday(&(ptr->time), NULL);
 	ptr->status = EATING;
 	gettimeofday(&time_stamp_eating, NULL);
 	time_stamp_ms = (time_stamp_eating.tv_sec * 1000) + (time_stamp_eating.tv_usec / 1000);
@@ -44,7 +45,6 @@ void eat_spaghetti(t_philo *ptr)
 		time_stamp_ms += 1;
 	printf("%lu philosopher %d is eating\n", time_stamp_ms, ptr->index);
 	usleep(ptr->info->time_to_eat * 1000);
-	gettimeofday(&(ptr->time), NULL);
 	pthread_mutex_unlock(ptr->left_fork);
 	pthread_mutex_unlock(ptr->right_fork);
 	ptr->status = NOT_EATING;
