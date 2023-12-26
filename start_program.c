@@ -33,7 +33,6 @@ void eat_spaghetti(t_philo *ptr)
 	pthread_mutex_lock(ptr->left_fork);
 	gettimeofday(&time_stamp_fork, NULL);
 	time_stamp_ms = (time_stamp_fork.tv_sec * 1000) + (time_stamp_fork.tv_usec / 1000);
-	// printf("reminder - %d for %d - div %d\n", time_stamp_fork.tv_usec % 1000, time_stamp_fork.tv_usec, time_stamp_fork.tv_usec / 1000);
 	if (time_stamp_fork.tv_usec % 1000 > 500)
 		time_stamp_ms += 1;
 	printf("%lu philosopher %d has taken a fork\n", time_stamp_ms, ptr->index);

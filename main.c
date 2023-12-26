@@ -65,8 +65,6 @@ int	main(int argc, char **argv)
 					&& is_alive(array[i], time, info.time_to_die) == DEAD)
 				{
 					gettimeofday(&time, NULL);
-					// time_stamp_ms = (time.tv_sec * 1000)
-					// 	+ (time.tv_usec / 1000);
 					printf("%lu philosoper %d has died\n", time_stamp_ms, i + 1);
 					exit(0);
 				}
