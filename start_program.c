@@ -29,6 +29,8 @@ void eat_spaghetti(t_philo *ptr)
 	unsigned long time_stamp_ms;
 	struct timeval time_stamp_eating;
 
+	if (ptr->right_fork == NULL)
+		usleep(ptr->info->time_to_die * 2 * 1000);
 	pthread_mutex_lock(ptr->right_fork);
 	pthread_mutex_lock(ptr->left_fork);
 	gettimeofday(&time_stamp_fork, NULL);
@@ -77,12 +79,11 @@ void create_threads(t_info *info, t_philo **array)
 		gettimeofday(&(ptr->time), NULL);
 		ptr->status = NOT_EATING;
 		ptr->index = index + 1;
-		if (temp_right_fork)
 			ptr->right_fork = temp_right_fork;
 		ptr->left_fork = malloc(sizeof(pthread_mutex_t));
 		pthread_mutex_init(ptr->left_fork, NULL);
 		temp_right_fork = ptr->left_fork;
-		if (info->n_philo == index + 1)
+		if (info->n_philo == index + 1 && info->n_philo > 1)
 			array[0]->right_fork = temp_right_fork;
 		ptr->info = info;
 		array[index] = ptr;
