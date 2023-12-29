@@ -68,13 +68,44 @@ int	check_status(t_philo *element, struct timeval time_stamp,
 	return (0);
 }
 
+int	get_time_stamp_last_eaten(t_philo **array, t_info *info)
+{
+	int				i;
+	int				count_done_eating;
+	struct timeval	time;
+
+	i = 0;
+	count_done_eating = 0;
+	gettimeofday(&time, NULL);
+	while (i < info->n_philo)
+	{
+		if (check_status(array[i], time, i, &count_done_eating) == 1)
+			return (1);
+		i++;
+	}
+	if (count_done_eating == info->n_philo)
+		return (2);
+	return (0);
+}
+
+void 	free_array(t_philo **array, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
 int	main(int argc, char **argv)
 {
 	t_philo			**array;
-	struct timeval	time;
 	t_info			info;
-	int				i;
-	int				count_done_eating;
+	int				result;
 
 	if (argc == 5 || argc == 6)
 	{
@@ -85,22 +116,11 @@ int	main(int argc, char **argv)
 		create_threads(&info, array);
 		while (1)
 		{
-			i = 0;
-			count_done_eating = 0;
-			gettimeofday(&time, NULL);
-			while (i < info.n_philo)
+			result = get_time_stamp_last_eaten(array, &info);
+			if (result == 1 || result == 2)
 			{
-				if (check_status(array[i], time, i, &count_done_eating) == 1)
-				{
-					//free
-					return (1);
-				}
-				i++;
-			}
-			if (count_done_eating == info.n_philo)
-			{
-				//free
-				return (0);
+				free_array(array, info.n_philo);
+				return (1);
 			}
 			usleep(5000);
 		}
