@@ -8,8 +8,12 @@
 
 #define ALIVE 0
 #define DEAD 1
+
 #define EATING 0
 #define NOT_EATING 1
+
+#define DONE_EATING 0
+#define NOT_DONE_EATING 1
 
 
 typedef struct s_info {
@@ -18,6 +22,7 @@ typedef struct s_info {
 	unsigned int	time_to_eat;
 	unsigned int	time_to_sleep;
 	unsigned int	time_to_think;
+	unsigned int	count_max_eat;
 }				t_info;
 
 typedef struct s_philo {

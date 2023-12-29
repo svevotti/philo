@@ -39,38 +39,56 @@ int	is_alive(t_philo *ptr, struct timeval current_time, unsigned long time_die)
 	return (0);
 }
 
+void	fill_info(t_info *ptr, char **argv, int argc)
+{
+	if (argc == 6)
+		ptr->count_max_eat = ft_atoi(argv[5]);
+	else
+		ptr->count_max_eat = -1;
+	ptr->n_philo = ft_atoi(argv[1]);
+	ptr->time_to_die = ft_atoi(argv[2]);
+	ptr->time_to_eat = ft_atoi(argv[3]);
+	ptr->time_to_sleep = ft_atoi(argv[4]);
+}
+
 int	main(int argc, char **argv)
 {
 	t_philo			**array;
 	struct timeval	time;
 	t_info			info;
-	unsigned long	time_stamp_ms;
+	unsigned long	time_in_ms;
 	int				i;
+	int				count_done_eating;
 
-	if (argc == 5)
+	if (argc == 5 || argc == 6)
 	{
-		info.n_philo = ft_atoi(argv[1]);
-		info.time_to_die = ft_atoi(argv[2]);
-		info.time_to_eat = ft_atoi(argv[3]);
-		info.time_to_sleep = ft_atoi(argv[4]);
+		fill_info(&info, argv, argc);
 		array = (t_philo **)malloc(sizeof(t_philo *) * info.n_philo);
+		if (array == NULL)
+			return (1);
 		create_threads(&info, array);
 		i = 0;
+		count_done_eating = 0;
 		while (1)
 		{
 			gettimeofday(&time, NULL);
 			while (i < info.n_philo)
 			{
+				if (array[i]->least_eating_status == DONE_EATING)
+					count_done_eating++;
 				if (array[i]->status == NOT_EATING
 					&& is_alive(array[i], time, info.time_to_die) == DEAD)
 				{
-					gettimeofday(&time, NULL);
-					printf("%lu philosoper %d has died\n", time_stamp_ms, i + 1);
-					exit(0);
+					time_in_ms = time.tv_sec * 1000 + time.tv_usec / 1000;
+					printf("%lu philosoper %d has died\n", time_in_ms, i + 1);
+					return (1);
 				}
 				i++;
 			}
+			if (count_done_eating == info.n_philo)
+				return (0);
 			i = 0;
+			count_done_eating = 0;
 			usleep(5000);
 		}
 	}

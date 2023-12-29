@@ -29,6 +29,8 @@ void eat_spaghetti(t_philo *ptr)
 	unsigned long time_stamp_ms;
 	struct timeval time_stamp_eating;
 
+	if (ptr->count_done_eating == ptr->info->count_max_eat)
+		ptr->least_eating_status = DONE_EATING;
 	if (ptr->right_fork == NULL)
 		usleep(ptr->info->time_to_die * 2 * 1000);
 	pthread_mutex_lock(ptr->right_fork);
@@ -46,6 +48,7 @@ void eat_spaghetti(t_philo *ptr)
 		time_stamp_ms += 1;
 	printf("%lu philosopher %d is eating\n", time_stamp_ms, ptr->index);
 	usleep(ptr->info->time_to_eat * 1000);
+	ptr->count_done_eating++;
 	pthread_mutex_unlock(ptr->left_fork);
 	pthread_mutex_unlock(ptr->right_fork);
 	ptr->status = NOT_EATING;
@@ -61,7 +64,7 @@ void	*routine(void *param)
 		take_a_nap(ptr);
 		think_life(ptr);
 	}
-	return NULL;
+	return (NULL);
 }
 
 void create_threads(t_info *info, t_philo **array)
@@ -78,6 +81,8 @@ void create_threads(t_info *info, t_philo **array)
 		ptr = (t_philo *)malloc(sizeof(t_philo));
 		gettimeofday(&(ptr->time), NULL);
 		ptr->status = NOT_EATING;
+		ptr->least_eating_status = NOT_DONE_EATING;
+		ptr->count_done_eating = 0;
 		ptr->index = index + 1;
 			ptr->right_fork = temp_right_fork;
 		ptr->left_fork = malloc(sizeof(pthread_mutex_t));
