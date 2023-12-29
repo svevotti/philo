@@ -3,21 +3,19 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <pthread.h>
 # include <sys/time.h>
 
-#define ALIVE 0
-#define DEAD 1
+# define ALIVE 0
+# define DEAD 1
 
-#define EATING 0
-#define NOT_EATING 1
+# define EATING 0
+# define NOT_EATING 1
 
-#define DONE_EATING 0
-#define NOT_DONE_EATING 1
-
+# define DONE_EATING 0
+# define NOT_DONE_EATING 1
 
 typedef struct s_info {
-	int n_philo;
+	int				n_philo;
 	unsigned int	time_to_die;
 	unsigned int	time_to_eat;
 	unsigned int	time_to_sleep;
@@ -26,18 +24,23 @@ typedef struct s_info {
 }				t_info;
 
 typedef struct s_philo {
-	int index;
-	struct timeval time;
-	pthread_mutex_t *left_fork;
-	pthread_mutex_t *right_fork;
-	t_info	*info;
-	int	status;
+	int				index;
+	struct timeval	time;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	t_info			*info;
+	int				status;
+	int				least_eating_status;
+	int				count_done_eating;
 }				t_philo;			
 
 //converstion_argv
-int ft_atoi(const char *str);
+int		ft_atoi(const char *str);
 
 //start program
-void create_threads(t_info *info, t_philo **array);
+int		create_threads(t_info *info, t_philo **array);
+
+//utilis functions main
+void	free_array(t_philo **array, int size);
 
 #endif
