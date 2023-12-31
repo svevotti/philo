@@ -1,65 +1,12 @@
 #include "philo.h"
-#include <stdio.h>
-#include <pthread.h>
-
-void	think_life(t_philo *ptr)
-{
-	struct timeval time_stamp;
-	unsigned long time_stamp_ms;
-
-	gettimeofday(&time_stamp, NULL);
-	time_stamp_ms = (time_stamp.tv_sec * 1000) + (time_stamp.tv_usec / 1000);
-	printf("%lu philosopher %d is thinking\n", time_stamp_ms, ptr->index);
-}
-
-void	take_a_nap(t_philo *ptr)
-{
-	struct timeval time_stamp;
-	unsigned long time_stamp_ms;
-
-	gettimeofday(&time_stamp, NULL);
-	time_stamp_ms = (time_stamp.tv_sec * 1000) + (time_stamp.tv_usec / 1000);
-	printf("%lu philosopher %d is sleeping\n", time_stamp_ms,  ptr->index);
-	usleep(ptr->info->time_to_sleep * 1000);
-}
-
-void eat_spaghetti(t_philo *ptr)
-{	
-	struct timeval time_stamp_fork;
-	unsigned long time_stamp_ms;
-	struct timeval time_stamp_eating;
-
-	if (ptr->count_done_eating == ptr->info->count_max_eat)
-		ptr->least_eating_status = DONE_EATING;
-	if (ptr->right_fork == NULL)
-		usleep(ptr->info->time_to_die * 2 * 1000);
-	pthread_mutex_lock(ptr->right_fork);
-	pthread_mutex_lock(ptr->left_fork);
-	gettimeofday(&time_stamp_fork, NULL);
-	time_stamp_ms = (time_stamp_fork.tv_sec * 1000) + (time_stamp_fork.tv_usec / 1000);
-	if (time_stamp_fork.tv_usec % 1000 > 500)
-		time_stamp_ms += 1;
-	printf("%lu philosopher %d has taken a fork\n", time_stamp_ms, ptr->index);
-	gettimeofday(&(ptr->time), NULL);
-	ptr->status = EATING;
-	gettimeofday(&time_stamp_eating, NULL);
-	time_stamp_ms = (time_stamp_eating.tv_sec * 1000) + (time_stamp_eating.tv_usec / 1000);
-	if (time_stamp_eating.tv_usec % 1000 > 500)
-		time_stamp_ms += 1;
-	printf("%lu philosopher %d is eating\n", time_stamp_ms, ptr->index);
-	usleep(ptr->info->time_to_eat * 1000);
-	ptr->count_done_eating++;
-	pthread_mutex_unlock(ptr->left_fork);
-	pthread_mutex_unlock(ptr->right_fork);
-	ptr->status = NOT_EATING;
-}
 
 void	*routine(void *param)
 {
-	t_philo *ptr;
+	t_philo	*ptr;
 
 	ptr = (t_philo *)param;
-	while (1) {
+	while (1)
+	{
 		eat_spaghetti(ptr);
 		take_a_nap(ptr);
 		think_life(ptr);
@@ -67,37 +14,52 @@ void	*routine(void *param)
 	return (NULL);
 }
 
-void create_threads(t_info *info, t_philo **array)
+t_philo	*create_philosopher(int index, pthread_mutex_t *fork, t_info *info)
 {
-	pthread_t	thread;
-	t_philo		*ptr;
-	int			index;
-	pthread_mutex_t *temp_right_fork;
+	t_philo			*ptr;
+
+	ptr = (t_philo *)malloc(sizeof(t_philo));
+	if (ptr == NULL)
+		return (NULL);
+	gettimeofday(&(ptr->time), NULL);
+	ptr->status = NOT_EATING;
+	ptr->least_eating_status = NOT_DONE_EATING;
+	ptr->count_done_eating = 0;
+	ptr->index = index + 1;
+	ptr->right_fork = fork;
+	ptr->left_fork = malloc(sizeof(pthread_mutex_t));
+	if (ptr->left_fork == NULL)
+		return (NULL);
+	if (pthread_mutex_init(ptr->left_fork, NULL) != 0)
+		return (NULL);
+	ptr->info = info;
+	return (ptr);
+}
+
+int	create_threads(t_info *info, t_philo **array)
+{
+	pthread_t		thread;
+	t_philo			*ptr;
+	int				index;
+	pthread_mutex_t	*temp_right_fork;
 
 	index = 0;
 	temp_right_fork = NULL;
 	while (index < info->n_philo)
 	{
-		ptr = (t_philo *)malloc(sizeof(t_philo));
-		gettimeofday(&(ptr->time), NULL);
-		ptr->status = NOT_EATING;
-		ptr->least_eating_status = NOT_DONE_EATING;
-		ptr->count_done_eating = 0;
-		ptr->index = index + 1;
-			ptr->right_fork = temp_right_fork;
-		ptr->left_fork = malloc(sizeof(pthread_mutex_t));
-		pthread_mutex_init(ptr->left_fork, NULL);
+		ptr = create_philosopher(index, temp_right_fork, info);
 		temp_right_fork = ptr->left_fork;
 		if (info->n_philo == index + 1 && info->n_philo > 1)
 			array[0]->right_fork = temp_right_fork;
-		ptr->info = info;
 		array[index] = ptr;
 		index++;
 	}
 	index = 0;
 	while (index < info->n_philo)
 	{
-		pthread_create(&thread, NULL, routine, array[index]);
+		if (pthread_create(&thread, NULL, routine, array[index]) != 0)
+			return (1);
 		index++;
 	}
+	return (0);
 }
