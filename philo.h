@@ -6,6 +6,8 @@
 # include <sys/time.h>
 # include <pthread.h>
 
+# define ERROR_NUMBER -1
+
 # define ALIVE 0
 # define DEAD 1
 
@@ -35,16 +37,15 @@ typedef struct s_philo {
 	int				count_done_eating;
 }				t_philo;			
 
-//converstion_argv
-int		ft_atoi(const char *str);
-
-//start program
+//intit program
 int		create_threads(t_info *info, t_philo **array);
 
-//utilis functions main
+//utilities
 void	free_array(t_philo **array, int size);
+int		check_argv(t_info *ptr, int argc);
+int		ft_atoi(char *str);
 
-//utilis functions start program
+//actions
 void	think_life(t_philo *ptr);
 void	take_a_nap(t_philo *ptr);
 void	eat_spaghetti(t_philo *ptr);
