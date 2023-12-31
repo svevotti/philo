@@ -4,6 +4,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <pthread.h>
 
 # define ALIVE 0
 # define DEAD 1
@@ -42,5 +43,10 @@ int		create_threads(t_info *info, t_philo **array);
 
 //utilis functions main
 void	free_array(t_philo **array, int size);
+
+//utilis functions start program
+void	think_life(t_philo *ptr);
+void	take_a_nap(t_philo *ptr);
+void	eat_spaghetti(t_philo *ptr);
 
 #endif
