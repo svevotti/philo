@@ -1,7 +1,7 @@
 CC = cc
 FLAGS = -Werror -Wextra -Wall
 NAME = philo
-PHILO_FILES = main.c init_program.c utilities.c.c actions.c
+PHILO_FILES = main.c init_program.c utilities.c actions.c
 PHILO_OBJ = $(PHILO_FILES:.c=.o)
 
 all: $(NAME)

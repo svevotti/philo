@@ -48,6 +48,6 @@ int		ft_atoi(char *str);
 //actions
 void	think_life(t_philo *ptr);
 void	take_a_nap(t_philo *ptr);
-void	eat_spaghetti(t_philo *ptr);
+int		eat_spaghetti(t_philo *ptr);
 
 #endif

@@ -7,7 +7,8 @@ void	*routine(void *param)
 	ptr = (t_philo *)param;
 	while (1)
 	{
-		eat_spaghetti(ptr);
+		if (eat_spaghetti(ptr) != 0)
+			return (NULL);
 		take_a_nap(ptr);
 		think_life(ptr);
 	}
