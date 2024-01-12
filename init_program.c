@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_program.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: smazzari <smazzari@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/12 14:55:55 by smazzari          #+#    #+#             */
+/*   Updated: 2024/01/12 14:55:56 by smazzari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	*routine(void *param)
@@ -49,6 +61,8 @@ int	create_threads(t_info *info, t_philo **array)
 	while (index < info->n_philo)
 	{
 		ptr = create_philosopher(index, temp_right_fork, info);
+		if (ptr == NULL)
+			return (1);
 		temp_right_fork = ptr->left_fork;
 		if (info->n_philo == index + 1 && info->n_philo > 1)
 			array[0]->right_fork = temp_right_fork;
@@ -59,7 +73,9 @@ int	create_threads(t_info *info, t_philo **array)
 	while (index < info->n_philo)
 	{
 		if (pthread_create(&thread, NULL, routine, array[index]) != 0)
+		{
 			return (1);
+		}
 		index++;
 	}
 	return (0);

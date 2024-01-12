@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   actions.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: smazzari <smazzari@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/12 14:55:46 by smazzari          #+#    #+#             */
+/*   Updated: 2024/01/12 14:55:47 by smazzari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 unsigned long	get_time_stamp(void)
@@ -30,7 +42,7 @@ void	take_a_nap(t_philo *ptr)
 }
 
 int	eat_spaghetti(t_philo *ptr)
-{	
+{
 	unsigned long	time_stamp_ms;
 
 	if (ptr->count_done_eating == ptr->info->count_max_eat)

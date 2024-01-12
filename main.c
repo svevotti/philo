@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: smazzari <smazzari@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/12 14:56:00 by smazzari          #+#    #+#             */
+/*   Updated: 2024/01/12 14:56:01 by smazzari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 t_philo	**fill_info(t_info *ptr, char **argv, int argc);
@@ -29,11 +41,12 @@ int	main(int argc, char **argv)
 				free_array(array, info.n_philo);
 				return (1);
 			}
-			usleep(5000);
 		}
+			usleep(5000);
 	}
 	else
 		printf("Error, something went wrong!\n");
+	return (0);
 }
 
 t_philo	**fill_info(t_info *ptr, char **argv, int argc)

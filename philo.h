@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: smazzari <smazzari@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/12 14:56:11 by smazzari          #+#    #+#             */
+/*   Updated: 2024/01/12 14:56:13 by smazzari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 # include <stdio.h>
@@ -5,7 +17,6 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <pthread.h>
-# include "Libft/libft.h"
 
 # define ERROR_NUMBER -1
 
