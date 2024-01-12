@@ -74,6 +74,7 @@ void	free_array(t_philo **array, int size)
 	i = 0;
 	while (i < size)
 	{
+		free(array[i]->left_fork);
 		free(array[i]);
 		i++;
 	}
