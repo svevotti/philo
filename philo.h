@@ -55,6 +55,9 @@ int		create_threads(t_info *info, t_philo **array);
 //utilities
 void	free_array(t_philo **array, int size);
 int		check_argv(t_info *ptr, int argc);
+int		check_philo_status(t_philo **array, t_info info);
+
+//ft_atoi
 int		ft_atoi(char *str);
 
 //actions

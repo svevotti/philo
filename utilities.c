@@ -12,55 +12,6 @@
 
 #include "philo.h"
 
-int	ft_skip_spaces(char *str, int i)
-{
-	while (str[i] == 32 || (str[i] > 8 && str[i] < 14))
-	{
-		i++;
-	}
-	return (i);
-}
-
-int	ft_check_sign(char *str, int i, int *sign)
-{
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			*sign = *sign * (-1);
-		i++;
-	}
-	return (i);
-}
-
-int	ft_atoi(char *str)
-{
-	int	i;
-	int	digit;
-	int	number;
-	int	sign;
-
-	number = 0;
-	sign = 1;
-	i = ft_skip_spaces(str, 0);
-	i = ft_check_sign(str, i, &sign);
-	while (str[i] != '\0')
-	{
-		if (str[i] >= '0' && str[i] <= '9')
-		{
-			digit = str[i] - 48;
-			number = number * 10 + digit;
-		}
-		else
-			return (ERROR_NUMBER);
-		i++;
-	}
-	if (number == 0)
-		return (ERROR_NUMBER);
-	if (sign == -1)
-		return (ERROR_NUMBER);
-	return (number);
-}
-
 int	check_argv(t_info *ptr, int argc)
 {
 	if (ptr->n_philo == -1)
@@ -79,6 +30,19 @@ int	check_argv(t_info *ptr, int argc)
 	return (0);
 }
 
+int	check_philo_status(t_philo **array, t_info info)
+{
+	int	time_death;
+
+	time_death = get_time_s(array, &info);
+	if (time_death == 1 || time_death == 2)
+	{
+		free_array(array, info.n_philo);
+		return (1);
+	}
+	return (0);
+}
+
 void	free_array(t_philo **array, int size)
 {
 	int	i;
@@ -86,6 +50,7 @@ void	free_array(t_philo **array, int size)
 	i = 0;
 	while (i < size)
 	{
+		free(array[i]->left_fork);
 		free(array[i]);
 		i++;
 	}

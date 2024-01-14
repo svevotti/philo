@@ -72,11 +72,8 @@ int	create_threads(t_info *info, t_philo **array)
 	index = 0;
 	while (index < info->n_philo)
 	{
-		if (pthread_create(&thread, NULL, routine, array[index]) != 0)
-		{
+		if (pthread_create(&thread, NULL, routine, array[index++]) != 0)
 			return (1);
-		}
-		index++;
 	}
 	return (0);
 }
