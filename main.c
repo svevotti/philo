@@ -18,8 +18,8 @@ int	main(int argc, char **argv)
 			return (1);
 		if (create_threads(&info, array) == 1)
 		{
+			pthread_mutex_destroy(info.mutex);
 			free(info.mutex);
-			// pthread_mutex_destroy(info.mutex);
 			free_array(array, info.n_philo);
 			return (1);
 		}
@@ -27,7 +27,6 @@ int	main(int argc, char **argv)
 		{
 			if (check_philo_status(array, &info) == 1) {
 				free(info.mutex);
-				// pthread_mutex_destroy(info.mutex);
 				return (1);
 			}
 		}
