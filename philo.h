@@ -31,14 +31,18 @@
 
 typedef struct s_info {
 	int				n_philo;
-	unsigned int	time_to_die;
-	unsigned int	time_to_eat;
-	unsigned int	time_to_sleep;
-	unsigned int	time_to_think;
-	unsigned int	count_max_eat;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				time_to_think;
+	int				count_max_eat;
+	int				flag_terminate_thread;
+	pthread_mutex_t	*mutex;
 }				t_info;
 
 typedef struct s_philo {
+	pthread_t		thread;
+	int				flag;
 	int				index;
 	struct timeval	time;
 	pthread_mutex_t	*left_fork;
@@ -49,20 +53,23 @@ typedef struct s_philo {
 	int				count_done_eating;
 }				t_philo;			
 
+//main
+int		get_time_s(t_philo **array, t_info *info);
 //intit program
 int		create_threads(t_info *info, t_philo **array);
 
 //utilities
 void	free_array(t_philo **array, int size);
 int		check_argv(t_info *ptr, int argc);
-int		check_philo_status(t_philo **array, t_info info);
+int		check_philo_status(t_philo **array, t_info *info);
 
 //ft_atoi
 int		ft_atoi(char *str);
 
 //actions
-void	think_life(t_philo *ptr);
-void	take_a_nap(t_philo *ptr);
+int		think_life(t_philo *ptr);
+int		take_a_nap(t_philo *ptr);
 int		eat_spaghetti(t_philo *ptr);
+int		safe_print(char *str, pthread_mutex_t *mutex, int flag_terminate_thread, int philo);
 
 #endif

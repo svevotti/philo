@@ -2,8 +2,7 @@
 
 t_philo	**fill_info(t_info *ptr, char **argv, int argc);
 int		get_time_s(t_philo **array, t_info *info);
-int		check_status(t_philo *element, struct timeval time_stamp,
-			int i, int *count_done_eating);
+int		check_status(t_philo *element, struct timeval time_stamp, int *count_done_eating);
 int		is_alive(t_philo *ptr, struct timeval current_time,
 			unsigned long time_die);
 
@@ -19,21 +18,24 @@ int	main(int argc, char **argv)
 			return (1);
 		if (create_threads(&info, array) == 1)
 		{
+			free(info.mutex);
+			// pthread_mutex_destroy(info.mutex);
 			free_array(array, info.n_philo);
 			return (1);
 		}
 		while (1)
 		{
-			if (get_time_s(array, &info) == 1 || get_time_s(array, &info) == 2)
-			{
-				free_array(array, info.n_philo);
+			if (check_philo_status(array, &info) == 1) {
+				free(info.mutex);
+				// pthread_mutex_destroy(info.mutex);
 				return (1);
 			}
-			usleep(5000);
 		}
+		usleep(5000);
 	}
 	else
 		printf("Error, something went wrong!\n");
+	return (0);
 }
 
 t_philo	**fill_info(t_info *ptr, char **argv, int argc)
@@ -44,6 +46,10 @@ t_philo	**fill_info(t_info *ptr, char **argv, int argc)
 	ptr->time_to_die = ft_atoi(argv[2]);
 	ptr->time_to_eat = ft_atoi(argv[3]);
 	ptr->time_to_sleep = ft_atoi(argv[4]);
+	ptr->flag_terminate_thread = 0;
+	ptr->mutex = malloc(sizeof(pthread_mutex_t));
+	if (pthread_mutex_init(ptr->mutex, NULL) != 0)
+		return (NULL);
 	if (argc == 6)
 		ptr->count_max_eat = ft_atoi(argv[5]);
 	else
@@ -67,27 +73,31 @@ int	get_time_s(t_philo **array, t_info *info)
 	gettimeofday(&time, NULL);
 	while (i < info->n_philo)
 	{
-		if (check_status(array[i], time, i, &count_done_eating) == 1)
+		if (check_status(array[i], time, &count_done_eating) == 1)
+		{
+			safe_print("has died", info->mutex, info->flag_terminate_thread, info->n_philo);
 			return (1);
+		}
 		i++;
 	}
 	if (count_done_eating == info->n_philo)
+	{
 		return (2);
+	}
 	return (0);
 }
 
-int	check_status(t_philo *element, struct timeval time_stamp,
-					int i, int *count_done_eating)
+int	check_status(t_philo *element, struct timeval time_stamp, int *count_done_eating)
 {
-	unsigned long	time_in_ms;
+	// unsigned long	time_in_ms;
 
 	if (element->least_eating_status == DONE_EATING)
 		*count_done_eating = *count_done_eating + 1;
 	if (element->status == NOT_EATING
 		&& is_alive(element, time_stamp, element->info->time_to_die) == DEAD)
 	{
-		time_in_ms = time_stamp.tv_sec * 1000 + time_stamp.tv_usec / 1000;
-		printf("%lu philosoper %d has died\n", time_in_ms, i + 1);
+		// time_in_ms = time_stamp.tv_sec * 1000 + time_stamp.tv_usec / 1000;
+		// //printf("%lu philosoper %d has died\n", time_in_ms, i + 1);//
 		return (1);
 	}
 	return (0);

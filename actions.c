@@ -24,20 +24,37 @@ unsigned long	get_time_stamp(void)
 	return (time_stamp_ms);
 }
 
-void	think_life(t_philo *ptr)
+int safe_print(char *str, pthread_mutex_t *mutex, int flag_terminate_thread, int philo)
 {
 	unsigned long	time_stamp_ms;
 
+	pthread_mutex_lock(mutex);
+	if (flag_terminate_thread == 1)
+	{
+		pthread_mutex_unlock(mutex);
+		return (1);
+	}
 	time_stamp_ms = get_time_stamp();
-	printf("%lu philosopher %d is thinking\n", time_stamp_ms, ptr->index);
+	printf("%lu philosopher %d %s\n", time_stamp_ms, philo, str);
+	pthread_mutex_unlock(mutex);
+	return (0);
 }
 
-void	take_a_nap(t_philo *ptr)
+int	think_life(t_philo *ptr)
 {
-	unsigned long	time_stamp_ms;
+	if (safe_print("is thinking", ptr->info->mutex, ptr->info->flag_terminate_thread, ptr->index))
+		return (1);
+	return (0);
+}
 
-	time_stamp_ms = get_time_stamp();
-	printf("%lu philosopher %d is sleeping\n", time_stamp_ms, ptr->index);
+int	take_a_nap(t_philo *ptr)
+{
+	if (safe_print("is sleeping", ptr->info->mutex, ptr->info->flag_terminate_thread, ptr->index))
+	{
+		usleep(ptr->info->time_to_sleep * 1000);
+		return (1);
+	}
+	return (0);
 	usleep(ptr->info->time_to_sleep * 1000);
 }
 

@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC = cc
-FLAGS = -Werror -Wextra -Wall
+FLAGS = -Werror -Wextra -Wall -pthread
 NAME = philo
 PHILO_FILES = init_program.c utilities.c actions.c ft_atoi.c main.c
 PHILO_OBJ = $(PHILO_FILES:.c=.o)
@@ -22,7 +22,7 @@ $(NAME): $(PHILO_OBJ)
 		$(CC) $(FLAGS) $(PHILO_OBJ) -o $(NAME)
 
 %.o: %.c
-	$(CC) -g -c $^
+	$(CC) $(FLAGS) -g -c $^
 
 clean:
 		rm -f $(PHILO_OBJ) main.o
