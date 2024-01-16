@@ -70,6 +70,7 @@ int		ft_atoi(char *str);
 int		think_life(t_philo *ptr);
 int		take_a_nap(t_philo *ptr);
 int		eat_spaghetti(t_philo *ptr);
-int		safe_print(char *str, pthread_mutex_t *mutex, int flag_terminate_thread, int philo);
+int		safe_print(char *str, pthread_mutex_t *mutex,
+			int flag_terminate_thread, int philo);
 
 #endif
