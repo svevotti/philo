@@ -27,8 +27,8 @@ void	*routine(void *param)
 			return (NULL);
 		if (ptr->info->flag_terminate_thread == 1)
 		{
-				printf("breaak\n");
-				break ;
+			printf("breaak\n");
+			break ;
 		}
 	}
 	return (NULL);
@@ -58,7 +58,6 @@ t_philo	*create_philosopher(int index, pthread_mutex_t *fork, t_info *info)
 
 int	create_threads(t_info *info, t_philo **array)
 {
-
 	t_philo			*ptr;
 	int				index;
 	pthread_mutex_t	*temp_right_fork;
