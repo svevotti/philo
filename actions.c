@@ -24,7 +24,8 @@ unsigned long	get_time_stamp(void)
 	return (time_stamp_ms);
 }
 
-int safe_print(char *str, pthread_mutex_t *mutex, int flag_terminate_thread, int philo)
+int	safe_print(char *str, pthread_mutex_t *mutex,
+		int flag_terminate_thread, int philo)
 {
 	unsigned long	time_stamp_ms;
 
@@ -42,14 +43,16 @@ int safe_print(char *str, pthread_mutex_t *mutex, int flag_terminate_thread, int
 
 int	think_life(t_philo *ptr)
 {
-	if (safe_print("is thinking", ptr->info->mutex, ptr->info->flag_terminate_thread, ptr->index))
+	if (safe_print("is thinking", ptr->info->mutex,
+			ptr->info->flag_terminate_thread, ptr->index))
 		return (1);
 	return (0);
 }
 
 int	take_a_nap(t_philo *ptr)
 {
-	if (safe_print("is sleeping", ptr->info->mutex, ptr->info->flag_terminate_thread, ptr->index))
+	if (safe_print("is sleeping", ptr->info->mutex,
+			ptr->info->flag_terminate_thread, ptr->index))
 	{
 		usleep(ptr->info->time_to_sleep * 1000);
 		return (1);
