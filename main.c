@@ -39,8 +39,17 @@ int	main(int argc, char **argv)
 		while (1)
 		{
 			if (check_philo_status(array, info) == 1)
+			{
+				printf("caught dead\n");
+				int i = 0;
+				while (i < info.n_philo)
+				{
+					pthread_join(array[i]->thread, NULL);
+					i++;
+				}
+				free_array(array, info.n_philo);
 				return (1);
-			usleep(5000);
+			}
 		}
 		usleep(5000);
 	}
@@ -86,11 +95,8 @@ int	get_time_s(t_philo **array, t_info *info)
 	{
 		if (check_status(array[i], time, i, &count_done_eating) == 1)
 		{
-			// i = 0;
-			// while (i < info->n_philo)
-			// {
-			// 	pthread_join(array[i++]->thread, NULL);
-			// }
+			array[i]->info->terminate_thread = 1;
+			// printf("terminate thread after death/enough food %d, for thread %d\n", array[i]->info->terminate_thread, array[i]->index);
 			return (1);
 		}
 		i++;

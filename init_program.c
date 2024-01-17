@@ -23,7 +23,7 @@ void	*routine(void *param)
 			return (NULL);
 		take_a_nap(ptr);
 		think_life(ptr);
-		printf("terminate thread %d\n", terminate_thread);
+		printf("routine terminate thread %d for thread %d\n", ptr->info->terminate_thread, ptr->index);
 		if (ptr->info->terminate_thread == 1)
 		{
 			printf("break\n");
@@ -57,7 +57,6 @@ t_philo	*create_philosopher(int index, pthread_mutex_t *fork, t_info *info)
 
 int	create_threads(t_info *info, t_philo **array)
 {
-	// pthread_t		thread;
 	t_philo			*ptr;
 	int				index;
 	pthread_mutex_t	*temp_right_fork;
