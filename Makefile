@@ -11,9 +11,10 @@
 # **************************************************************************** #
 
 CC = cc
-FLAGS = -Werror -Wextra -Wall -pthread
+FLAGS = -Werror -Wextra -Wall -pthread -g
 NAME = philo
-PHILO_FILES = init_program.c utilities.c actions.c ft_atoi.c main.c
+PHILO_FILES = init_program.c utilities.c actions.c ft_atoi.c main.c \
+				get_time_stamp.c
 PHILO_OBJ = $(PHILO_FILES:.c=.o)
 
 all: $(NAME)
@@ -22,7 +23,7 @@ $(NAME): $(PHILO_OBJ)
 		$(CC) $(FLAGS) $(PHILO_OBJ) -o $(NAME)
 
 %.o: %.c
-	$(CC) $(FLAGS) -g -c $^
+	$(CC) $(FLAGS) -c $^
 
 clean:
 		rm -f $(PHILO_OBJ) main.o

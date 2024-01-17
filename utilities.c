@@ -30,29 +30,6 @@ int	check_argv(t_info *ptr, int argc)
 	return (0);
 }
 
-int	check_philo_status(t_philo **array, t_info *info)
-{
-	int	time_death;
-	// int	i;
-
-	// i = 0;
-	time_death = get_time_s(array, info);
-	if (time_death == 1 || time_death == 2)
-	{
-		info->flag_terminate_thread = 1;
-		// while (i < info->n_philo && info->n_philo > 1)
-		// {
-		// 	// printf("i %d\n", i);
-		// 	pthread_join(array[i]->thread, NULL);
-		// 	i++;
-		// }
-		free_array(array, info->n_philo);
-		pthread_mutex_destroy(info->mutex);
-		return (1);
-	}
-	return (0);
-}
-
 void	free_array(t_philo **array, int size)
 {
 	int	i;
@@ -60,7 +37,6 @@ void	free_array(t_philo **array, int size)
 	i = 0;
 	while (i < size)
 	{
-		pthread_mutex_destroy(array[i]->left_fork);
 		free(array[i]->left_fork);
 		free(array[i]);
 		i++;

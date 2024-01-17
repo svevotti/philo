@@ -19,16 +19,13 @@ void	*routine(void *param)
 	ptr = (t_philo *)param;
 	while (1)
 	{
-		if (eat_spaghetti(ptr) == 1)
+		if (eat_spaghetti(ptr) != 0)
 			return (NULL);
-		if (take_a_nap(ptr) == 1)
-			return (NULL);
-		if (think_life(ptr) == 1)
-			return (NULL);
-		if (ptr->info->flag_terminate_thread == 1)
+		take_a_nap(ptr);
+		think_life(ptr);
+		if (ptr->flag_teminate_threads == 1)
 		{
-			printf("breaak\n");
-			break ;
+			printf("break\n");
 		}
 	}
 	return (NULL);
@@ -58,6 +55,7 @@ t_philo	*create_philosopher(int index, pthread_mutex_t *fork, t_info *info)
 
 int	create_threads(t_info *info, t_philo **array)
 {
+	pthread_t		thread;
 	t_philo			*ptr;
 	int				index;
 	pthread_mutex_t	*temp_right_fork;
@@ -78,7 +76,7 @@ int	create_threads(t_info *info, t_philo **array)
 	index = 0;
 	while (index < info->n_philo)
 	{
-		if (pthread_create(&(ptr->thread), NULL, routine, array[index++]) != 0)
+		if (pthread_create(&thread, NULL, routine, array[index++]) != 0)
 			return (1);
 	}
 	return (0);
