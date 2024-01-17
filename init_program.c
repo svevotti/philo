@@ -21,13 +21,12 @@ void	*routine(void *param)
 	{
 		if (eat_spaghetti(ptr) == 1)
 			return (NULL);
-		if (take_a_nap(ptr) == 1)
-			return (NULL);
-		if (think_life(ptr) == 1)
-			return (NULL);
-		if (ptr->info->flag_terminate_thread == 1)
+		take_a_nap(ptr);
+		think_life(ptr);
+		printf("terminate thread %d\n", terminate_thread);
+		if (ptr->info->terminate_thread == 1)
 		{
-			printf("breaak\n");
+			printf("break\n");
 			break ;
 		}
 	}
@@ -58,6 +57,7 @@ t_philo	*create_philosopher(int index, pthread_mutex_t *fork, t_info *info)
 
 int	create_threads(t_info *info, t_philo **array)
 {
+	// pthread_t		thread;
 	t_philo			*ptr;
 	int				index;
 	pthread_mutex_t	*temp_right_fork;

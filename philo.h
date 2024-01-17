@@ -51,6 +51,7 @@ typedef struct s_philo {
 	int				status;
 	int				least_eating_status;
 	int				count_done_eating;
+	pthread_t		thread;
 }				t_philo;			
 
 //main

@@ -38,11 +38,9 @@ int	main(int argc, char **argv)
 		}
 		while (1)
 		{
-			if (check_philo_status(array, &info) == 1)
-			{
-				free(info.mutex);
+			if (check_philo_status(array, info) == 1)
 				return (1);
-			}
+			usleep(5000);
 		}
 		usleep(5000);
 	}
@@ -86,10 +84,13 @@ int	get_time_s(t_philo **array, t_info *info)
 	gettimeofday(&time, NULL);
 	while (i < info->n_philo)
 	{
-		if (check_status(array[i], time, &count_done_eating) == 1)
+		if (check_status(array[i], time, i, &count_done_eating) == 1)
 		{
-			safe_print("has died", info->mutex,
-				info->flag_terminate_thread, info->n_philo);
+			// i = 0;
+			// while (i < info->n_philo)
+			// {
+			// 	pthread_join(array[i++]->thread, NULL);
+			// }
 			return (1);
 		}
 		i++;
