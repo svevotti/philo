@@ -14,12 +14,8 @@
 
 t_philo	**fill_info(t_info *ptr, char **argv, int argc);
 int		get_time_s(t_philo **array, t_info *info);
-<<<<<<< HEAD
 int		check_status(t_philo *element, struct timeval time_stamp,
 			int *count_done_eating);
-=======
-int		check_status(t_philo *element, struct timeval time_stamp, int *count_done_eating);
->>>>>>> cadb238 (Explore safe print option)
 int		is_alive(t_philo *ptr, struct timeval current_time,
 			unsigned long time_die);
 
@@ -42,12 +38,8 @@ int	main(int argc, char **argv)
 		}
 		while (1)
 		{
-<<<<<<< HEAD
 			if (check_philo_status(array, &info) == 1)
 			{
-=======
-			if (check_philo_status(array, &info) == 1) {
->>>>>>> cadb238 (Explore safe print option)
 				free(info.mutex);
 				return (1);
 			}
