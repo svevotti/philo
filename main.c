@@ -13,6 +13,7 @@
 #include "philo.h"
 
 t_philo	**fill_info(t_info *ptr, char **argv, int argc);
+int		get_status(t_philo **array, t_info *info);
 
 int	main(int argc, char **argv)
 {
@@ -31,11 +32,10 @@ int	main(int argc, char **argv)
 		}
 		while (1)
 		{
-			int status = get_time_s(array, &info);
-			if (status == DEAD_STATUS || status == STOP_ETING)
+			if (get_status(array, &info) == 1)
 				return (1);
+			usleep(5000);
 		}
-		usleep(5000);
 	}
 	else
 		printf("Error, something went wrong!\n");
@@ -50,7 +50,7 @@ t_philo	**fill_info(t_info *ptr, char **argv, int argc)
 	ptr->time_to_die = ft_atoi(argv[2]);
 	ptr->time_to_eat = ft_atoi(argv[3]);
 	ptr->time_to_sleep = ft_atoi(argv[4]);
-	// ptr->flag_teminate_threads = 0;
+	ptr->flag_teminate_threads = 0;
 	if (argc == 6)
 		ptr->count_max_eat = ft_atoi(argv[5]);
 	else
@@ -61,4 +61,25 @@ t_philo	**fill_info(t_info *ptr, char **argv, int argc)
 	if (array == NULL)
 		return (NULL);
 	return (array);
+}
+
+int	get_status(t_philo **array, t_info *info)
+{
+	int	status;
+	int	i;
+
+	i = 0;
+	status = get_time_s(array, info);
+	if (status == DEAD || status == STOP_EATING)
+	{
+		i = 0;
+		while (i < info->n_philo)
+		{
+			pthread_join(array[i]->thread, NULL);
+			i++;
+		}
+		free_array(array, info->n_philo);
+		return (1);
+	}
+	return (0);
 }
