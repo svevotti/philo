@@ -39,6 +39,9 @@ typedef struct s_info {
 	int	time_to_sleep;
 	int	time_to_think;
 	int	count_max_eat;
+	pthread_mutex_t	*mutex_sleep;
+	pthread_mutex_t	*mutex_think;
+	int				flag_teminate_threads;
 }				t_info;
 
 typedef struct s_philo {
@@ -50,11 +53,10 @@ typedef struct s_philo {
 	int				status;
 	int				least_eating_status;
 	int				count_done_eating;
-	int				flag_teminate_threads;
+	pthread_t		thread;
 }				t_philo;			
 
-//main
-int		get_time_s(t_philo **array, t_info *info);
+
 //intit program
 int		create_threads(t_info *info, t_philo **array);
 
@@ -66,15 +68,12 @@ int		check_argv(t_info *ptr, int argc);
 int		ft_atoi(char *str);
 
 //actions
-void	think_life(t_philo *ptr);
-void	take_a_nap(t_philo *ptr);
+int		think_life(t_philo *ptr);
+int	take_a_nap(t_philo *ptr);
 int		eat_spaghetti(t_philo *ptr);
 
 //get_time_stamp
 int		get_time_s(t_philo **array, t_info *info);
-// int		check_status(t_philo *element, struct timeval time_stamp,
-// 			int i, int *count_done_eating);
-// int		is_alive(t_philo *ptr, struct timeval current_time,
-// 			unsigned long time_die);
+
 
 #endif

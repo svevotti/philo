@@ -21,11 +21,15 @@ void	*routine(void *param)
 	{
 		if (eat_spaghetti(ptr) != 0)
 			return (NULL);
-		take_a_nap(ptr);
-		think_life(ptr);
-		if (ptr->flag_teminate_threads == 1)
+		if (take_a_nap(ptr) == 1)
+			return (NULL);
+		if (think_life(ptr) == 1)
+			return (NULL);
+		// printf("--- flag threads need to stop -%d- by philo %d---\n", ptr->info->flag_teminate_threads, ptr->index);
+		// printf("--- philo that defines flag %d---\n", ptr->index);
+		if (ptr->info->flag_teminate_threads == 1)
 		{
-			printf("break\n");
+			return (NULL);
 		}
 	}
 	return (NULL);
@@ -44,7 +48,7 @@ t_philo	*create_philosopher(int index, pthread_mutex_t *fork, t_info *info)
 	ptr->count_done_eating = 0;
 	ptr->index = index + 1;
 	ptr->right_fork = fork;
-	ptr->left_fork = malloc(sizeof(pthread_mutex_t));
+	ptr->left_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	if (ptr->left_fork == NULL)
 		return (NULL);
 	if (pthread_mutex_init(ptr->left_fork, NULL) != 0)
@@ -55,7 +59,6 @@ t_philo	*create_philosopher(int index, pthread_mutex_t *fork, t_info *info)
 
 int	create_threads(t_info *info, t_philo **array)
 {
-	pthread_t		thread;
 	t_philo			*ptr;
 	int				index;
 	pthread_mutex_t	*temp_right_fork;
@@ -76,8 +79,11 @@ int	create_threads(t_info *info, t_philo **array)
 	index = 0;
 	while (index < info->n_philo)
 	{
-		if (pthread_create(&thread, NULL, routine, array[index++]) != 0)
+		if (pthread_create(&(ptr->thread), NULL, routine, array[index++]) != 0)
+		{
 			return (1);
+		}
+		pthread_detach(ptr->thread);
 	}
 	return (0);
 }

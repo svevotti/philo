@@ -24,21 +24,40 @@ unsigned long	get_time_stamp(void)
 	return (time_stamp_ms);
 }
 
-void	think_life(t_philo *ptr)
+int	think_life(t_philo *ptr)
 {
 	unsigned long	time_stamp_ms;
 
+	//printf("---which thread is waiting to think %d---\n", ptr->index);
+	//pthread_mutex_lock(ptr->info->mutex_think);
+	if (ptr->info->flag_teminate_threads == 1)
+	{
+		//pthread_mutex_unlock(ptr->info->mutex_think);
+		return (1);
+	}
 	time_stamp_ms = get_time_stamp();
 	printf("%lu philosopher %d is thinking\n", time_stamp_ms, ptr->index);
+	return (0);
+	//pthread_mutex_unlock(ptr->info->mutex_think);
 }
 
-void	take_a_nap(t_philo *ptr)
+int	take_a_nap(t_philo *ptr)
 {
 	unsigned long	time_stamp_ms;
 
+	//printf("---which thread is waiting to sleep %d---\n", ptr->index);
+	//pthread_mutex_lock(ptr->info->mutex_sleep);
+	if (ptr->info->flag_teminate_threads == 1)
+	{
+		//pthread_mutex_unlock(ptr->info->mutex_sleep);
+		return (1);
+	}
 	time_stamp_ms = get_time_stamp();
 	printf("%lu philosopher %d is sleeping\n", time_stamp_ms, ptr->index);
 	usleep(ptr->info->time_to_sleep * 1000);
+	return (0);
+	//pthread_mutex_unlock(ptr->info->mutex_sleep);
+	//usleep(ptr->info->time_to_sleep * 1000);
 }
 
 int	eat_spaghetti(t_philo *ptr)
