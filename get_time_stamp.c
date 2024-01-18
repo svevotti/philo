@@ -20,8 +20,11 @@ int	get_time_s(t_philo **array, t_info *info)
 			return (DEAD);
 		i++;
 	}
-	if (count_done_eating == info->n_philo)
+	if (count_done_eating == info->count_max_eat)
+	{
+		info->flag_teminate_threads = 1;
 		return (STOP_EATING);
+	}
 	return (0);
 }
 
