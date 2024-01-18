@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC = cc
-FLAGS = -Wextra -Wall -pthread -g
+FLAGS = -Werror -Wextra -Wall -pthread -g
 NAME = philo
 PHILO_FILES = init_program.c utilities.c actions.c ft_atoi.c main.c \
 				get_time_stamp.c

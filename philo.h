@@ -27,7 +27,7 @@
 # define NOT_DONE_EATING 1
 
 # define DEAD 1
-#define STOP_EATING 2
+# define STOP_EATING 2
 
 typedef struct s_info {
 	int	n_philo;
@@ -51,7 +51,6 @@ typedef struct s_philo {
 	pthread_t		thread;
 }				t_philo;			
 
-
 //intit program
 int		create_threads(t_info *info, t_philo **array);
 
@@ -69,6 +68,5 @@ int		eat_spaghetti(t_philo *ptr);
 
 //get_time_stamp
 int		get_time_s(t_philo **array, t_info *info);
-
 
 #endif

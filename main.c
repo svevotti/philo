@@ -13,6 +13,7 @@
 #include "philo.h"
 
 t_philo	**fill_info(t_info *ptr, char **argv, int argc);
+int		get_status(t_philo **array, t_info *info);
 
 int	main(int argc, char **argv)
 {
@@ -31,18 +32,8 @@ int	main(int argc, char **argv)
 		}
 		while (1)
 		{
-			int status = get_time_s(array, &info);
-			if (status == DEAD || status == STOP_EATING)
-			{
-				int i = 0;
-				while (i < info.n_philo)
-				{
-					pthread_join(array[i]->thread, NULL);
-					i++;
-				}
-				free_array(array, info.n_philo);
+			if (get_status(array, &info) == 1)
 				return (1);
-			}
 			usleep(5000);
 		}
 	}
@@ -70,4 +61,25 @@ t_philo	**fill_info(t_info *ptr, char **argv, int argc)
 	if (array == NULL)
 		return (NULL);
 	return (array);
+}
+
+int	get_status(t_philo **array, t_info *info)
+{
+	int	status;
+	int	i;
+
+	i = 0;
+	status = get_time_s(array, info);
+	if (status == DEAD || status == STOP_EATING)
+	{
+		i = 0;
+		while (i < info->n_philo)
+		{
+			pthread_join(array[i]->thread, NULL);
+			i++;
+		}
+		free_array(array, info->n_philo);
+		return (1);
+	}
+	return (0);
 }
