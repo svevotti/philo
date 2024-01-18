@@ -26,32 +26,21 @@ int	main(int argc, char **argv)
 			return (1);
 		if (create_threads(&info, array) == 1)
 		{
-			pthread_mutex_destroy(info.mutex_sleep);
-			pthread_mutex_destroy(info.mutex_think);
-			free(info.mutex_sleep);
-			free(info.mutex_think);
 			free_array(array, info.n_philo);
 			return (1);
 		}
 		while (1)
 		{
 			int status = get_time_s(array, &info);
-			if (status == DEAD_STATUS || status == STOP_ETING)
+			if (status == DEAD || status == STOP_EATING)
 			{
-			// 	int i = 0;
-			// 	while (i < info.n_philo)
-			// 	{
-			// 		printf("--it is where I get stuck %i?---\n", i);
-			// 		pthread_join(array[i]->thread, NULL);
-			// 		i++;
-			// 	}
-			// 	printf("--after join---\n");
-				pthread_mutex_destroy(info.mutex_sleep);
-				pthread_mutex_destroy(info.mutex_think);
-				free(info.mutex_sleep);
-				free(info.mutex_think);
+				int i = 0;
+				while (i < info.n_philo)
+				{
+					pthread_join(array[i]->thread, NULL);
+					i++;
+				}
 				free_array(array, info.n_philo);
-				//printf("--before exiting program---\n");
 				return (1);
 			}
 			usleep(5000);
@@ -70,11 +59,6 @@ t_philo	**fill_info(t_info *ptr, char **argv, int argc)
 	ptr->time_to_die = ft_atoi(argv[2]);
 	ptr->time_to_eat = ft_atoi(argv[3]);
 	ptr->time_to_sleep = ft_atoi(argv[4]);
-	ptr->mutex_think = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	ptr->mutex_sleep = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	pthread_mutex_init(ptr->mutex_think, NULL);
-	pthread_mutex_init(ptr->mutex_sleep, NULL);
-	//printf("---after mutex init---\n");
 	ptr->flag_teminate_threads = 0;
 	if (argc == 6)
 		ptr->count_max_eat = ft_atoi(argv[5]);

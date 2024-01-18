@@ -17,13 +17,11 @@ int	get_time_s(t_philo **array, t_info *info)
 	while (i < info->n_philo)
 	{
 		if (check_status(array[i], time, i, &count_done_eating) == 1)
-		{
-			return (DEAD_STATUS);
-		}
+			return (DEAD);
 		i++;
 	}
 	if (count_done_eating == info->n_philo)
-		return (STOP_ETING);
+		return (STOP_EATING);
 	return (0);
 }
 
@@ -37,7 +35,6 @@ int	check_status(t_philo *element, struct timeval time_stamp,
 	if (element->status == NOT_EATING
 		&& is_alive(element, time_stamp, element->info->time_to_die) == DEAD)
 	{
-		//element->info->flag_teminate_threads = 1;
 		time_in_ms = time_stamp.tv_sec * 1000 + time_stamp.tv_usec / 1000;
 		printf("\033[1;31m%lu philosoper %d has DIED\033[0m\n", time_in_ms, i + 1);
 		return (1);

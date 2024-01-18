@@ -20,17 +20,14 @@
 
 # define ERROR_NUMBER -1
 
-# define ALIVE 0
-# define DEAD 1
-
 # define EATING 0
 # define NOT_EATING 1
 
 # define DONE_EATING 0
 # define NOT_DONE_EATING 1
 
-#define DEAD_STATUS 1
-#define STOP_ETING 2
+# define DEAD 1
+#define STOP_EATING 2
 
 typedef struct s_info {
 	int	n_philo;
@@ -39,9 +36,7 @@ typedef struct s_info {
 	int	time_to_sleep;
 	int	time_to_think;
 	int	count_max_eat;
-	pthread_mutex_t	*mutex_sleep;
-	pthread_mutex_t	*mutex_think;
-	int				flag_teminate_threads;
+	int	flag_teminate_threads;
 }				t_info;
 
 typedef struct s_philo {
@@ -68,8 +63,8 @@ int		check_argv(t_info *ptr, int argc);
 int		ft_atoi(char *str);
 
 //actions
-int		think_life(t_philo *ptr);
-int	take_a_nap(t_philo *ptr);
+void	think_life(t_philo *ptr);
+void	take_a_nap(t_philo *ptr);
 int		eat_spaghetti(t_philo *ptr);
 
 //get_time_stamp

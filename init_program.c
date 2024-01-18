@@ -21,16 +21,10 @@ void	*routine(void *param)
 	{
 		if (eat_spaghetti(ptr) != 0)
 			return (NULL);
-		if (take_a_nap(ptr) == 1)
-			return (NULL);
-		if (think_life(ptr) == 1)
-			return (NULL);
-		// printf("--- flag threads need to stop -%d- by philo %d---\n", ptr->info->flag_teminate_threads, ptr->index);
-		// printf("--- philo that defines flag %d---\n", ptr->index);
+		take_a_nap(ptr);
+		think_life(ptr);
 		if (ptr->info->flag_teminate_threads == 1)
-		{
 			return (NULL);
-		}
 	}
 	return (NULL);
 }
@@ -79,11 +73,9 @@ int	create_threads(t_info *info, t_philo **array)
 	index = 0;
 	while (index < info->n_philo)
 	{
-		if (pthread_create(&(ptr->thread), NULL, routine, array[index++]) != 0)
-		{
+		ptr = array[index++];
+		if (pthread_create(&(ptr->thread), NULL, routine, ptr) != 0)
 			return (1);
-		}
-		pthread_detach(ptr->thread);
 	}
 	return (0);
 }
