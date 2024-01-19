@@ -24,51 +24,45 @@ unsigned long	get_time_stamp(void)
 	return (time_stamp_ms);
 }
 
-void	think_life(t_philo *ptr)
+int	print_action(int terminate_threads, int philo, char *str)
 {
 	unsigned long	time_stamp_ms;
 
-	if (ptr->info->flag_teminate_threads == 0)
+	time_stamp_ms = get_time_stamp();
+	if (terminate_threads == 0)
 	{
-		time_stamp_ms = get_time_stamp();
-		printf("%lu philosopher %d is thinking\n", time_stamp_ms, ptr->index);
+		printf("%lu philosopher %d %s\n", time_stamp_ms, philo, str);
+		return (0);
 	}
+	return (1);
+}
+
+void	think_life(t_philo *ptr)
+{
+	print_action(ptr->info->terminate_threads, ptr->index, "is thinking");
 }
 
 void	take_a_nap(t_philo *ptr)
 {
-	unsigned long	time_stamp_ms;
-
-	if (ptr->info->flag_teminate_threads == 0)
-	{
-		time_stamp_ms = get_time_stamp();
-		printf("%lu philosopher %d is sleeping\n", time_stamp_ms, ptr->index);
+	print_action(ptr->info->terminate_threads, ptr->index, "is sleeping");
+	if (ptr->info->terminate_threads == 0)
 		usleep(ptr->info->time_to_sleep * 1000);
-	}
 }
 
 int	eat_spaghetti(t_philo *ptr)
 {
-	unsigned long	time_stamp_ms;
-
 	if (ptr->count_done_eating == ptr->info->count_max_eat)
 		ptr->least_eating_status = DONE_EATING;
 	if (ptr->right_fork == NULL)
 		return (1);
 	pthread_mutex_lock(ptr->right_fork);
 	pthread_mutex_lock(ptr->left_fork);
-	time_stamp_ms = get_time_stamp();
-	if (ptr->info->flag_teminate_threads == 0)
-		printf("%lu philosopher %d has taken a fork\n", time_stamp_ms,
-			ptr->index);
+	print_action(ptr->info->terminate_threads, ptr->index, "has taken a fork");
 	gettimeofday(&(ptr->time), NULL);
 	ptr->status = EATING;
-	time_stamp_ms = get_time_stamp();
-	if (ptr->info->flag_teminate_threads == 0)
-	{
-		printf("%lu philosopher %d is eating\n", time_stamp_ms, ptr->index);
+	print_action(ptr->info->terminate_threads, ptr->index, "is eating");
+	if (ptr->info->terminate_threads == 0)
 		usleep(ptr->info->time_to_eat * 1000);
-	}
 	ptr->count_done_eating++;
 	pthread_mutex_unlock(ptr->left_fork);
 	pthread_mutex_unlock(ptr->right_fork);

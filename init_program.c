@@ -23,7 +23,7 @@ void	*routine(void *param)
 			return (NULL);
 		take_a_nap(ptr);
 		think_life(ptr);
-		if (ptr->info->flag_teminate_threads == 1)
+		if (ptr->info->terminate_threads == 1)
 			return (NULL);
 	}
 	return (NULL);
