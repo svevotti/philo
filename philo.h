@@ -36,7 +36,7 @@ typedef struct s_info {
 	int	time_to_sleep;
 	int	time_to_think;
 	int	count_max_eat;
-	int	flag_teminate_threads;
+	int	terminate_threads;
 }				t_info;
 
 typedef struct s_philo {
