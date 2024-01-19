@@ -29,7 +29,6 @@ int	print_action(int terminate_threads, int philo, char *str)
 	unsigned long	time_stamp_ms;
 
 	time_stamp_ms = get_time_stamp();
-
 	if (terminate_threads == 0)
 	{
 		printf("%lu philosopher %d %s\n", time_stamp_ms, philo, str);
