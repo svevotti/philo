@@ -15,6 +15,7 @@
 void	*routine(void *param)
 {
 	t_philo	*ptr;
+	int		terminate_status;
 
 	ptr = (t_philo *)param;
 	while (1)
@@ -23,7 +24,10 @@ void	*routine(void *param)
 			return (NULL);
 		take_a_nap(ptr);
 		think_life(ptr);
-		if (ptr->info->terminate_threads == 1)
+		pthread_mutex_lock(ptr->info->terminate_lock);
+		terminate_status = ptr->info->terminate_threads;
+		pthread_mutex_unlock(ptr->info->terminate_lock);
+		if (terminate_status == 1)
 			return (NULL);
 	}
 	return (NULL);
@@ -48,6 +52,9 @@ t_philo	*create_philosopher(int index, pthread_mutex_t *fork, t_info *info)
 	if (pthread_mutex_init(ptr->left_fork, NULL) != 0)
 		return (NULL);
 	ptr->status_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(ptr->status_lock, NULL);
+	ptr->least_status_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(ptr->least_status_lock, NULL);
 	ptr->info = info;
 	return (ptr);
 }

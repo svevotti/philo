@@ -27,9 +27,13 @@ unsigned long	get_time_stamp(void)
 int	print_action(t_info *info, int philo, char *str)
 {
 	unsigned long	time_stamp_ms;
+	int terminate_status;
 
 	time_stamp_ms = get_time_stamp();
-	if (info->terminate_threads == 0)
+	pthread_mutex_lock(info->terminate_lock);
+	terminate_status = info->terminate_threads;
+	pthread_mutex_unlock(info->terminate_lock);
+	if (terminate_status == 0)
 	{
 		pthread_mutex_lock(info->print);
 		printf("%lu philosopher %d %s\n", time_stamp_ms, philo, str);
@@ -46,15 +50,25 @@ void	think_life(t_philo *ptr)
 
 void	take_a_nap(t_philo *ptr)
 {
+	int terminate_status;
+
 	print_action(ptr->info, ptr->index, "is sleeping");
-	if (ptr->info->terminate_threads == 0)
+	pthread_mutex_lock(ptr->info->terminate_lock);
+	terminate_status = ptr->info->terminate_threads;
+	pthread_mutex_unlock(ptr->info->terminate_lock);
+	if (terminate_status == 0)
 		usleep(ptr->info->time_to_sleep * 1000);
 }
 
 int	eat_spaghetti(t_philo *ptr)
 {
-	if (ptr->count_done_eating == ptr->info->count_max_eat)
+	int terminate_status;
+
+	if (ptr->count_done_eating == ptr->info->count_max_eat) {
+		pthread_mutex_lock(ptr->least_status_lock);
 		ptr->least_eating_status = DONE_EATING;
+		pthread_mutex_unlock(ptr->least_status_lock);
+	}
 	if (ptr->right_fork == NULL)
 		return (1);
 	pthread_mutex_lock(ptr->right_fork);
@@ -65,7 +79,10 @@ int	eat_spaghetti(t_philo *ptr)
 	ptr->status = EATING;
 	pthread_mutex_unlock(ptr->status_lock);
 	print_action(ptr->info, ptr->index, "is eating");
-	if (ptr->info->terminate_threads == 0)
+	pthread_mutex_lock(ptr->info->terminate_lock);
+	terminate_status = ptr->info->terminate_threads;
+	pthread_mutex_unlock(ptr->info->terminate_lock);
+	if (terminate_status == 0)
 		usleep(ptr->info->time_to_eat * 1000);
 	ptr->count_done_eating++;
 	pthread_mutex_unlock(ptr->left_fork);

@@ -22,7 +22,9 @@ int	get_time_s(t_philo **array, t_info *info)
 	}
 	if (count_done_eating == info->n_philo)
 	{
+		pthread_mutex_lock(info->terminate_lock);
 		info->terminate_threads = 1;
+		pthread_mutex_unlock(info->terminate_lock);
 		return (STOP_EATING);
 	}
 	return (0);
@@ -33,8 +35,12 @@ int	check_status(t_philo *element, struct timeval time_stamp,
 {
 	unsigned long	time_in_ms;
 	int	eating_status;
+	int	least_eating_status;
 
-	if (element->least_eating_status == DONE_EATING)
+	pthread_mutex_lock(element->least_status_lock);
+	least_eating_status = element->least_eating_status;
+	pthread_mutex_unlock(element->least_status_lock);
+	if (least_eating_status == DONE_EATING)
 		*count_done_eating = *count_done_eating + 1;
 	pthread_mutex_lock(element->status_lock);
 	eating_status = element->status;
@@ -69,7 +75,9 @@ int	is_alive(t_philo *ptr, struct timeval current_time, unsigned long time_die)
 		/ 1000;
 	if (total_difference > time_die)
 	{
+		pthread_mutex_lock(ptr->info->terminate_lock);
 		ptr->info->terminate_threads = 1;
+		pthread_mutex_unlock(ptr->info->terminate_lock);
 		return (1);
 	}
 	return (0);
