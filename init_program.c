@@ -47,6 +47,7 @@ t_philo	*create_philosopher(int index, pthread_mutex_t *fork, t_info *info)
 		return (NULL);
 	if (pthread_mutex_init(ptr->left_fork, NULL) != 0)
 		return (NULL);
+	ptr->status_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	ptr->info = info;
 	return (ptr);
 }

@@ -32,11 +32,14 @@ int	check_status(t_philo *element, struct timeval time_stamp,
 					int i, int *count_done_eating)
 {
 	unsigned long	time_in_ms;
+	int	eating_status;
 
 	if (element->least_eating_status == DONE_EATING)
 		*count_done_eating = *count_done_eating + 1;
-	if (element->status == NOT_EATING
-		&& is_alive(element, time_stamp, element->info->time_to_die) == DEAD)
+	pthread_mutex_lock(element->status_lock);
+	eating_status = element->status;
+	pthread_mutex_unlock(element->status_lock);
+	if (eating_status && is_alive(element, time_stamp, element->info->time_to_die) == DEAD)
 	{
 		time_in_ms = time_stamp.tv_sec * 1000 + time_stamp.tv_usec / 1000;
 		printf("\033[1;31m%lu philosoper %d has died\033[0m\n", time_in_ms, i + 1);

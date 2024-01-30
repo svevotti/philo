@@ -61,13 +61,17 @@ int	eat_spaghetti(t_philo *ptr)
 	pthread_mutex_lock(ptr->left_fork);
 	print_action(ptr->info, ptr->index, "has taken a fork");
 	gettimeofday(&(ptr->time), NULL);
+	pthread_mutex_lock(ptr->status_lock);
 	ptr->status = EATING;
+	pthread_mutex_unlock(ptr->status_lock);
 	print_action(ptr->info, ptr->index, "is eating");
 	if (ptr->info->terminate_threads == 0)
 		usleep(ptr->info->time_to_eat * 1000);
 	ptr->count_done_eating++;
 	pthread_mutex_unlock(ptr->left_fork);
 	pthread_mutex_unlock(ptr->right_fork);
+	pthread_mutex_lock(ptr->status_lock);
 	ptr->status = NOT_EATING;
+	pthread_mutex_unlock(ptr->status_lock);
 	return (0);
 }

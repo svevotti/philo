@@ -45,6 +45,7 @@ typedef struct s_philo {
 	struct timeval	time;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	*status_lock;
 	t_info			*info;
 	int				status;
 	int				least_eating_status;
