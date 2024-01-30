@@ -45,11 +45,11 @@ t_philo	*create_philosopher(int index, pthread_mutex_t *fork, t_info *info)
 	ptr->least_eating_status = NOT_DONE_EATING;
 	ptr->count_done_eating = 0;
 	ptr->index = index + 1;
-	ptr->right_fork = fork;
-	ptr->left_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	if (ptr->left_fork == NULL)
+	ptr->left_fork = fork;
+	ptr->right_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (ptr->right_fork == NULL)
 		return (NULL);
-	if (pthread_mutex_init(ptr->left_fork, NULL) != 0)
+	if (pthread_mutex_init(ptr->right_fork, NULL) != 0)
 		return (NULL);
 	ptr->status_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(ptr->status_lock, NULL);
@@ -63,18 +63,18 @@ int	create_threads(t_info *info, t_philo **array)
 {
 	t_philo			*ptr;
 	int				index;
-	pthread_mutex_t	*temp_right_fork;
+	pthread_mutex_t	*temp_left_fork;
 
 	index = 0;
-	temp_right_fork = NULL;
+	temp_left_fork = NULL;
 	while (index < info->n_philo)
 	{
-		ptr = create_philosopher(index, temp_right_fork, info);
+		ptr = create_philosopher(index, temp_left_fork, info);
 		if (ptr == NULL)
 			return (1);
-		temp_right_fork = ptr->left_fork;
+		temp_left_fork = ptr->right_fork;
 		if (info->n_philo == index + 1 && info->n_philo > 1)
-			array[0]->right_fork = temp_right_fork;
+			array[0]->left_fork = temp_left_fork;
 		array[index] = ptr;
 		index++;
 	}

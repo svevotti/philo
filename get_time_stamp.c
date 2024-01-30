@@ -48,7 +48,9 @@ int	check_status(t_philo *element, struct timeval time_stamp,
 	if (eating_status && is_alive(element, time_stamp, element->info->time_to_die) == DEAD)
 	{
 		time_in_ms = time_stamp.tv_sec * 1000 + time_stamp.tv_usec / 1000;
+		pthread_mutex_lock(element->info->print);
 		printf("\033[1;31m%lu philosoper %d has died\033[0m\n", time_in_ms, i + 1);
+		pthread_mutex_unlock(element->info->print);
 		return (1);
 	}
 	return (0);

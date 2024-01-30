@@ -71,8 +71,16 @@ int	eat_spaghetti(t_philo *ptr)
 	}
 	if (ptr->right_fork == NULL)
 		return (1);
-	pthread_mutex_lock(ptr->right_fork);
-	pthread_mutex_lock(ptr->left_fork);
+	if (ptr->index == ptr->info->n_philo)
+	{
+		pthread_mutex_lock(ptr->right_fork);
+		pthread_mutex_lock(ptr->left_fork);
+	}
+	else
+	{
+		pthread_mutex_lock(ptr->left_fork);
+		pthread_mutex_lock(ptr->right_fork);
+	}
 	print_action(ptr->info, ptr->index, "has taken a fork");
 	gettimeofday(&(ptr->time), NULL);
 	pthread_mutex_lock(ptr->status_lock);
