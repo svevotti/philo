@@ -37,6 +37,8 @@ typedef struct s_info {
 	int	time_to_think;
 	int	count_max_eat;
 	int	terminate_threads;
+	pthread_mutex_t	*print;
+	pthread_mutex_t	*terminate_lock;
 }				t_info;
 
 typedef struct s_philo {
@@ -44,6 +46,8 @@ typedef struct s_philo {
 	struct timeval	time;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	*status_lock;
+	pthread_mutex_t	*least_status_lock;
 	t_info			*info;
 	int				status;
 	int				least_eating_status;
