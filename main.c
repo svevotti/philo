@@ -63,6 +63,9 @@ t_philo	**fill_info(t_info *ptr, char **argv, int argc)
 	array = (t_philo **)malloc(sizeof(t_philo *) * ptr->n_philo);
 	if (array == NULL)
 		return (NULL);
+	ptr->print = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (ptr->print == NULL)
+		return (NULL);
 	return (array);
 }
 
