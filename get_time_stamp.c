@@ -5,7 +5,7 @@ int		check_status(t_philo *element, struct timeval time_stamp,
 int		is_alive(t_philo *ptr, struct timeval current_time,
 			unsigned long time_die);
 
-int	get_time_s(t_philo **array, t_info *info)
+int	get_status(t_philo **array, t_info *info)
 {
 	int				i;
 	int				count_done_eating;
@@ -47,7 +47,7 @@ int	check_status(t_philo *element, struct timeval time_stamp,
 	pthread_mutex_unlock(element->status_lock);
 	if (eating_status && is_alive(element, time_stamp, element->info->time_to_die) == DEAD)
 	{
-		time_in_ms = time_stamp.tv_sec * 1000 + time_stamp.tv_usec / 1000;
+		time_in_ms = (time_stamp.tv_sec * 1000 + time_stamp.tv_usec / 1000) - element->info->start_time_ms;
 		pthread_mutex_lock(element->info->print);
 		printf("\033[1;31m%lu philosoper %d has died\033[0m\n", time_in_ms, i + 1);
 		pthread_mutex_unlock(element->info->print);
@@ -75,6 +75,8 @@ int	is_alive(t_philo *ptr, struct timeval current_time, unsigned long time_die)
 	}
 	total_difference = difference_seconds * 1000 + difference_microseconds
 		/ 1000;
+	if (current_time.tv_usec % 1000 > 500)
+		total_difference += 1;
 	if (total_difference > time_die)
 	{
 		pthread_mutex_lock(ptr->info->terminate_lock);
