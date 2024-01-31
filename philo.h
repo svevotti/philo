@@ -39,6 +39,7 @@ typedef struct s_info {
 	int	terminate_threads;
 	pthread_mutex_t	*print;
 	pthread_mutex_t	*terminate_lock;
+	unsigned long	start_time_ms;
 }				t_info;
 
 typedef struct s_philo {
@@ -71,6 +72,9 @@ void	take_a_nap(t_philo *ptr);
 int		eat_spaghetti(t_philo *ptr);
 
 //get_time_stamp
-int		get_time_s(t_philo **array, t_info *info);
+int		get_status(t_philo **array, t_info *info);
+
+//action
+unsigned long	get_time_stamp(void);
 
 #endif

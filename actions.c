@@ -24,12 +24,17 @@ unsigned long	get_time_stamp(void)
 	return (time_stamp_ms);
 }
 
+unsigned long	get_time_stamp_from_start(unsigned long start_time_ms)
+{
+	return (get_time_stamp() - start_time_ms);
+}
+
 int	print_action(t_info *info, int philo, char *str)
 {
 	unsigned long	time_stamp_ms;
 	int terminate_status;
 
-	time_stamp_ms = get_time_stamp();
+	time_stamp_ms = get_time_stamp_from_start(info->start_time_ms);
 	pthread_mutex_lock(info->terminate_lock);
 	terminate_status = info->terminate_threads;
 	pthread_mutex_unlock(info->terminate_lock);

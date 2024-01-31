@@ -13,7 +13,7 @@
 #include "philo.h"
 
 t_philo	**fill_info(t_info *ptr, char **argv, int argc);
-int		get_status(t_philo **array, t_info *info);
+int		free_threads(t_philo **array, t_info *info);
 
 int	main(int argc, char **argv)
 {
@@ -32,7 +32,7 @@ int	main(int argc, char **argv)
 		}
 		while (1)
 		{
-			if (get_status(array, &info) == 1)
+			if (free_threads(array, &info) == 1)
 				return (1);
 			usleep(5000);
 		}
@@ -51,6 +51,7 @@ t_philo	**fill_info(t_info *ptr, char **argv, int argc)
 	ptr->time_to_eat = ft_atoi(argv[3]);
 	ptr->time_to_sleep = ft_atoi(argv[4]);
 	ptr->terminate_threads = 0;
+	ptr->start_time_ms = get_time_stamp();
 	if (argc == 6)
 		ptr->count_max_eat = ft_atoi(argv[5]);
 	else
@@ -74,13 +75,13 @@ t_philo	**fill_info(t_info *ptr, char **argv, int argc)
 	return (array);
 }
 
-int	get_status(t_philo **array, t_info *info)
+int	free_threads(t_philo **array, t_info *info)
 {
 	int	status;
 	int	i;
 
 	i = 0;
-	status = get_time_s(array, info);
+	status = get_status(array, info);
 	if (status == DEAD || status == STOP_EATING)
 	{
 		i = 0;

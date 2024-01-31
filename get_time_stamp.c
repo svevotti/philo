@@ -5,7 +5,7 @@ int		check_status(t_philo *element, struct timeval time_stamp,
 int		is_alive(t_philo *ptr, struct timeval current_time,
 			unsigned long time_die);
 
-int	get_time_s(t_philo **array, t_info *info)
+int	get_status(t_philo **array, t_info *info)
 {
 	int				i;
 	int				count_done_eating;
