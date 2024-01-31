@@ -75,7 +75,7 @@ int	is_alive(t_philo *ptr, struct timeval current_time, unsigned long time_die)
 	}
 	total_difference = difference_seconds * 1000 + difference_microseconds
 		/ 1000;
-	if (current_time.tv_usec % 1000 > 500)
+	if (difference_microseconds % 1000 > 500)
 		total_difference += 1;
 	if (total_difference > time_die)
 	{
