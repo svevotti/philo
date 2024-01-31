@@ -74,7 +74,7 @@ int	eat_spaghetti(t_philo *ptr)
 		ptr->least_eating_status = DONE_EATING;
 		pthread_mutex_unlock(ptr->least_status_lock);
 	}
-	if (ptr->right_fork == NULL)
+	if (ptr->left_fork == NULL)
 		return (1);
 	if (ptr->index == ptr->info->n_philo)
 	{
