@@ -34,7 +34,7 @@ int	main(int argc, char **argv)
 		{
 			if (free_threads(array, &info) == 1)
 				return (1);
-			usleep(5000);
+			usleep(5);
 		}
 	}
 	else
@@ -51,7 +51,6 @@ t_philo	**fill_info(t_info *ptr, char **argv, int argc)
 	ptr->time_to_eat = ft_atoi(argv[3]);
 	ptr->time_to_sleep = ft_atoi(argv[4]);
 	ptr->terminate_threads = 0;
-	ptr->start_time_ms = get_time_stamp();
 	if (argc == 6)
 		ptr->count_max_eat = ft_atoi(argv[5]);
 	else

@@ -45,6 +45,7 @@ typedef struct s_info {
 typedef struct s_philo {
 	int				index;
 	struct timeval	time;
+	long	time_beginning_eating;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*status_lock;
@@ -75,6 +76,8 @@ int		eat_spaghetti(t_philo *ptr);
 int		get_status(t_philo **array, t_info *info);
 
 //action
-unsigned long	get_time_stamp(void);
+long	get_time_stamp(void);
+int		print_action(t_info *info, int philo, char *str);
+
 
 #endif

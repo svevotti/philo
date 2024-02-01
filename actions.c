@@ -11,22 +11,14 @@
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <string.h>
 
-unsigned long	get_time_stamp(void)
+void	do_action(long duration)
 {
-	struct timeval	time_stamp;
-	unsigned long	time_stamp_ms;
+	long timestamp = get_time_stamp();
 
-	gettimeofday(&time_stamp, NULL);
-	time_stamp_ms = (time_stamp.tv_sec * 1000) + (time_stamp.tv_usec / 1000);
-	if (time_stamp.tv_usec % 1000 > 500)
-		time_stamp_ms += 1;
-	return (time_stamp_ms);
-}
-
-unsigned long	get_time_stamp_from_start(unsigned long start_time_ms)
-{
-	return (get_time_stamp() - start_time_ms);
+	while (get_time_stamp() - timestamp < duration)
+			usleep(duration / 10);
 }
 
 int	print_action(t_info *info, int philo, char *str)
@@ -34,23 +26,26 @@ int	print_action(t_info *info, int philo, char *str)
 	unsigned long	time_stamp_ms;
 	int terminate_status;
 
-	time_stamp_ms = get_time_stamp_from_start(info->start_time_ms);
+	time_stamp_ms = get_time_stamp() - info->start_time_ms;
 	pthread_mutex_lock(info->terminate_lock);
 	terminate_status = info->terminate_threads;
 	pthread_mutex_unlock(info->terminate_lock);
-	if (terminate_status == 0)
+	if (terminate_status == 0 || strcmp(str, "has died") == 0)
 	{
-		pthread_mutex_lock(info->print);
-		printf("%lu philosopher %d %s\n", time_stamp_ms, philo, str);
-		pthread_mutex_unlock(info->print);
+		if (strcmp(str, "has died") == 0)
+		{
+			pthread_mutex_lock(info->print);
+			printf("\033[1;31m%lu philosopher %d %s\033[0m\n", time_stamp_ms, philo, str);
+			pthread_mutex_unlock(info->print);
+		}
+		else {
+			pthread_mutex_lock(info->print);
+			printf("%lu philosopher %d %s\n", time_stamp_ms, philo, str);
+			pthread_mutex_unlock(info->print);
+		}
 		return (0);
 	}
 	return (1);
-}
-
-void	think_life(t_philo *ptr)
-{
-	print_action(ptr->info, ptr->index, "is thinking");
 }
 
 void	take_a_nap(t_philo *ptr)
@@ -61,8 +56,9 @@ void	take_a_nap(t_philo *ptr)
 	pthread_mutex_lock(ptr->info->terminate_lock);
 	terminate_status = ptr->info->terminate_threads;
 	pthread_mutex_unlock(ptr->info->terminate_lock);
-	if (terminate_status == 0)
-		usleep(ptr->info->time_to_sleep * 1000);
+	if (terminate_status == 0) {
+		do_action(ptr->info->time_to_sleep);
+	}
 }
 
 int	eat_spaghetti(t_philo *ptr)
@@ -87,8 +83,8 @@ int	eat_spaghetti(t_philo *ptr)
 		pthread_mutex_lock(ptr->right_fork);
 	}
 	print_action(ptr->info, ptr->index, "has taken a fork");
-	gettimeofday(&(ptr->time), NULL);
 	pthread_mutex_lock(ptr->status_lock);
+	ptr->time_beginning_eating = get_time_stamp();
 	ptr->status = EATING;
 	pthread_mutex_unlock(ptr->status_lock);
 	print_action(ptr->info, ptr->index, "is eating");
@@ -96,7 +92,7 @@ int	eat_spaghetti(t_philo *ptr)
 	terminate_status = ptr->info->terminate_threads;
 	pthread_mutex_unlock(ptr->info->terminate_lock);
 	if (terminate_status == 0)
-		usleep(ptr->info->time_to_eat * 1000);
+		do_action(ptr->info->time_to_eat);
 	ptr->count_done_eating++;
 	pthread_mutex_unlock(ptr->left_fork);
 	pthread_mutex_unlock(ptr->right_fork);
