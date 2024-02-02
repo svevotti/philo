@@ -72,10 +72,18 @@ int	eat_spaghetti(t_philo *ptr)
 	}
 	if (ptr->left_fork == NULL)
 		return (1);
-	if (ptr->index == ptr->info->n_philo)
+	if (ptr->info->n_philo % 2 == 0)
 	{
-		pthread_mutex_lock(ptr->right_fork);
-		pthread_mutex_lock(ptr->left_fork);
+		if (ptr->index == ptr->info->n_philo)
+		{
+			pthread_mutex_lock(ptr->right_fork);
+			pthread_mutex_lock(ptr->left_fork);
+		}
+		else
+		{
+			pthread_mutex_lock(ptr->left_fork);
+			pthread_mutex_lock(ptr->right_fork);
+		}
 	}
 	else
 	{
