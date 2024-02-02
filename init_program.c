@@ -18,12 +18,13 @@ void	*routine(void *param)
 	int		terminate_status;
 
 	ptr = (t_philo *)param;
+	// ptr->time_beginning_eating = get_time_stamp();
 	while (1)
 	{
 		if (eat_spaghetti(ptr) != 0)
 			return (NULL);
 		take_a_nap(ptr);
-		think_life(ptr);
+		print_action(ptr->info, ptr->index, "is thinking");
 		pthread_mutex_lock(ptr->info->terminate_lock);
 		terminate_status = ptr->info->terminate_threads;
 		pthread_mutex_unlock(ptr->info->terminate_lock);
@@ -40,7 +41,7 @@ t_philo	*create_philosopher(int index, pthread_mutex_t *fork, t_info *info)
 	ptr = (t_philo *)malloc(sizeof(t_philo));
 	if (ptr == NULL)
 		return (NULL);
-	gettimeofday(&(ptr->time), NULL);
+	ptr->time_beginning_eating = get_time_stamp();
 	ptr->status = NOT_EATING;
 	ptr->least_eating_status = NOT_DONE_EATING;
 	ptr->count_done_eating = 0;
@@ -67,6 +68,7 @@ int	create_threads(t_info *info, t_philo **array)
 
 	index = 0;
 	temp_left_fork = NULL;
+	info->start_time_ms = get_time_stamp();
 	while (index < info->n_philo)
 	{
 		ptr = create_philosopher(index, temp_left_fork, info);
