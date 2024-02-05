@@ -26,14 +26,12 @@ t_philo	**fill_info(t_info *ptr, char **argv, int argc)
 		ptr->count_max_eat = ft_atoi(argv[5]);
 	else
 		ptr->count_max_eat = -1;
-	if (ptr->n_philo == 0)
+	if (check_argv(ptr, argc) == -1 || ptr->n_philo == 0)
 	{
-		printf("None came to eat\n");
-		return (NULL);
-	}
-	if (check_argv(ptr, argc) == -1)
-	{
-		printf("An argument is wrong\n");
+		if (ptr->n_philo == 0)
+			printf("None came to eat\n");
+		else
+			printf("An argument is wrong\n");
 		return (NULL);
 	}
 	array = (t_philo **)malloc(sizeof(t_philo *) * ptr->n_philo);
