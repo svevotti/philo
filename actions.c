@@ -21,7 +21,7 @@ void	do_action(long duration)
 			usleep(duration / 10);
 }
 
-int	print_action(t_info *info, int philo, char *str)
+void	print_action(t_info *info, int philo, char *str)
 {
 	unsigned long	time_stamp_ms;
 	int terminate_status;
@@ -43,9 +43,7 @@ int	print_action(t_info *info, int philo, char *str)
 			printf("%lu philosopher %d %s\n", time_stamp_ms, philo, str);
 			pthread_mutex_unlock(info->print);
 		}
-		return (0);
 	}
-	return (1);
 }
 
 void	take_a_nap(t_philo *ptr)
@@ -72,18 +70,10 @@ int	eat_spaghetti(t_philo *ptr)
 	}
 	if (ptr->left_fork == NULL)
 		return (1);
-	if (ptr->info->n_philo % 2 == 0)
+	if (ptr->index == 1)
 	{
-		if (ptr->index == ptr->info->n_philo)
-		{
-			pthread_mutex_lock(ptr->right_fork);
-			pthread_mutex_lock(ptr->left_fork);
-		}
-		else
-		{
-			pthread_mutex_lock(ptr->left_fork);
-			pthread_mutex_lock(ptr->right_fork);
-		}
+		pthread_mutex_lock(ptr->right_fork);
+		pthread_mutex_lock(ptr->left_fork);
 	}
 	else
 	{
@@ -102,8 +92,16 @@ int	eat_spaghetti(t_philo *ptr)
 	if (terminate_status == 0)
 		do_action(ptr->info->time_to_eat);
 	ptr->count_done_eating++;
-	pthread_mutex_unlock(ptr->left_fork);
-	pthread_mutex_unlock(ptr->right_fork);
+	if (ptr->index == 1)
+	{
+		pthread_mutex_unlock(ptr->left_fork);
+		pthread_mutex_unlock(ptr->right_fork);
+	}
+	else
+	{
+		pthread_mutex_unlock(ptr->right_fork);
+		pthread_mutex_unlock(ptr->left_fork);
+	}
 	pthread_mutex_lock(ptr->status_lock);
 	ptr->status = NOT_EATING;
 	pthread_mutex_unlock(ptr->status_lock);
