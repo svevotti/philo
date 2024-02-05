@@ -30,9 +30,9 @@ void	print_action(t_info *info, int philo, char *str)
 	pthread_mutex_lock(info->terminate_lock);
 	terminate_status = info->terminate_threads;
 	pthread_mutex_unlock(info->terminate_lock);
-	if (terminate_status == 0 || strcmp(str, "has died") == 0)
+	if (terminate_status == 0 || ft_strncmp(str, "has died", 8) == 0)
 	{
-		if (strcmp(str, "has died") == 0)
+		if (ft_strncmp(str, "has died", 8) == 0)
 		{
 			pthread_mutex_lock(info->print);
 			printf("\033[1;31m%lu philosopher %d %s\033[0m\n", time_stamp_ms,
@@ -55,7 +55,12 @@ void	free_array(t_philo **array, int size)
 	i = 0;
 	while (i < size)
 	{
-		free(array[i]->left_fork);
+		pthread_mutex_destroy(array[i]->right_fork);
+		pthread_mutex_destroy(array[i]->status_lock);
+		pthread_mutex_destroy(array[i]->least_status_lock);
+		free(array[i]->right_fork);
+		free(array[i]->status_lock);
+		free(array[i]->least_status_lock);
 		free(array[i]);
 		i++;
 	}

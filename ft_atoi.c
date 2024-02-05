@@ -54,8 +54,6 @@ int	ft_atoi(char *str)
 			return (ERROR_NUMBER);
 		i++;
 	}
-	if (number == 0)
-		return (ERROR_NUMBER);
 	if (sign == -1)
 		return (ERROR_NUMBER);
 	return (number);

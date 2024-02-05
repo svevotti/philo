@@ -14,6 +14,14 @@
 
 int		free_threads(t_philo **array, t_info *info);
 
+void	free_info(t_info *info)
+{
+	pthread_mutex_destroy(info->print);
+	pthread_mutex_destroy(info->terminate_lock);
+	free(info->print);
+	free(info->terminate_lock);
+}
+
 int	main(int argc, char **argv)
 {
 	t_philo			**array;
@@ -27,6 +35,7 @@ int	main(int argc, char **argv)
 		if (create_threads(&info, array) == 1)
 		{
 			free_array(array, info.n_philo);
+			free_info(&info);
 			return (1);
 		}
 		while (1)
@@ -57,6 +66,7 @@ int	free_threads(t_philo **array, t_info *info)
 			i++;
 		}
 		free_array(array, info->n_philo);
+		free_info(info);
 		return (1);
 	}
 	return (0);
