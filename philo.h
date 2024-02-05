@@ -63,6 +63,7 @@ int		create_threads(t_info *info, t_philo **array);
 //utilities
 void	free_array(t_philo **array, int size);
 int		check_argv(t_info *ptr, int argc);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 //ft_atoi
 int		ft_atoi(char *str);
@@ -77,7 +78,7 @@ int		get_status(t_philo **array, t_info *info);
 
 //action
 long	get_time_stamp(void);
-int		print_action(t_info *info, int philo, char *str);
+void	print_action(t_info *info, int philo, char *str);
 
 
 #endif
