@@ -54,9 +54,30 @@ void	take_a_nap(t_philo *ptr)
 	pthread_mutex_lock(ptr->info->terminate_lock);
 	terminate_status = ptr->info->terminate_threads;
 	pthread_mutex_unlock(ptr->info->terminate_lock);
-	if (terminate_status == 0) {
+	if (terminate_status == 0)
 		do_action(ptr->info->time_to_sleep);
+}
+
+void	get_forks(t_philo *philo)
+{
+	if (philo->index == philo->info->n_philo - 1)
+	{
+		pthread_mutex_lock(philo->left_fork);
+		pthread_mutex_lock(philo->right_fork);
 	}
+	else
+	{
+		pthread_mutex_lock(philo->right_fork);
+		if (philo->index == philo->info->n_philo && philo->count_done_eating % 2 == 1)
+			usleep(100);
+		pthread_mutex_lock(philo->left_fork);	
+	}
+}
+
+void	give_back_forks(t_philo *philo)
+{
+		pthread_mutex_unlock(philo->right_fork);	
+		pthread_mutex_unlock(philo->left_fork);
 }
 
 int	eat_spaghetti(t_philo *ptr)
@@ -70,38 +91,20 @@ int	eat_spaghetti(t_philo *ptr)
 	}
 	if (ptr->left_fork == NULL)
 		return (1);
-	if (ptr->index == 1)
-	{
-		pthread_mutex_lock(ptr->right_fork);
-		pthread_mutex_lock(ptr->left_fork);
-	}
-	else
-	{
-		pthread_mutex_lock(ptr->left_fork);
-		pthread_mutex_lock(ptr->right_fork);
-	}
+	get_forks(ptr);
 	print_action(ptr->info, ptr->index, "has taken a fork");
 	pthread_mutex_lock(ptr->status_lock);
-	ptr->time_beginning_eating = get_time_stamp();
 	ptr->status = EATING;
+	ptr->count_done_eating++;
+	ptr->time_beginning_eating = get_time_stamp();
 	pthread_mutex_unlock(ptr->status_lock);
-	print_action(ptr->info, ptr->index, "is eating");
 	pthread_mutex_lock(ptr->info->terminate_lock);
 	terminate_status = ptr->info->terminate_threads;
 	pthread_mutex_unlock(ptr->info->terminate_lock);
+	print_action(ptr->info, ptr->index, "is eating");
 	if (terminate_status == 0)
 		do_action(ptr->info->time_to_eat);
-	ptr->count_done_eating++;
-	if (ptr->index == 1)
-	{
-		pthread_mutex_unlock(ptr->left_fork);
-		pthread_mutex_unlock(ptr->right_fork);
-	}
-	else
-	{
-		pthread_mutex_unlock(ptr->right_fork);
-		pthread_mutex_unlock(ptr->left_fork);
-	}
+	give_back_forks(ptr);
 	pthread_mutex_lock(ptr->status_lock);
 	ptr->status = NOT_EATING;
 	pthread_mutex_unlock(ptr->status_lock);
