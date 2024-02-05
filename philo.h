@@ -30,13 +30,13 @@
 # define STOP_EATING 2
 
 typedef struct s_info {
-	int	n_philo;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	time_to_think;
-	int	count_max_eat;
-	int	terminate_threads;
+	int				n_philo;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				time_to_think;
+	int				count_max_eat;
+	int				terminate_threads;
 	pthread_mutex_t	*print;
 	pthread_mutex_t	*terminate_lock;
 	unsigned long	start_time_ms;
@@ -45,7 +45,7 @@ typedef struct s_info {
 typedef struct s_philo {
 	int				index;
 	struct timeval	time;
-	long	time_beginning_eating;
+	long			time_beginning_eating;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*status_lock;
@@ -64,21 +64,21 @@ int		create_threads(t_info *info, t_philo **array);
 void	free_array(t_philo **array, int size);
 int		check_argv(t_info *ptr, int argc);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+void	do_action(long duration);
+void	print_action(t_info *info, int philo, char *str);
 
 //ft_atoi
 int		ft_atoi(char *str);
 
 //actions
-void	think_life(t_philo *ptr);
 void	take_a_nap(t_philo *ptr);
 int		eat_spaghetti(t_philo *ptr);
 
 //get_time_stamp
 int		get_status(t_philo **array, t_info *info);
-
-//action
 long	get_time_stamp(void);
-void	print_action(t_info *info, int philo, char *str);
 
+//init info
+t_philo	**fill_info(t_info *ptr, char **argv, int argc);
 
 #endif

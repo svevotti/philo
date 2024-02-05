@@ -18,7 +18,6 @@ void	*routine(void *param)
 	int		terminate_status;
 
 	ptr = (t_philo *)param;
-	// ptr->time_beginning_eating = get_time_stamp();
 	while (1)
 	{
 		if (eat_spaghetti(ptr) != 0)
@@ -77,8 +76,7 @@ int	create_threads(t_info *info, t_philo **array)
 		temp_left_fork = ptr->right_fork;
 		if (info->n_philo == index + 1 && info->n_philo > 1)
 			array[0]->left_fork = temp_left_fork;
-		array[index] = ptr;
-		index++;
+		array[index++] = ptr;
 	}
 	index = 0;
 	while (index < info->n_philo)

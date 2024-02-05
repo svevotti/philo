@@ -6,7 +6,7 @@ int		is_alive(t_philo *ptr, long time_die);
 long	get_time_stamp(void)
 {
 	struct timeval	time_stamp;
-	long	time_stamp_ms;
+	long			time_stamp_ms;
 
 	gettimeofday(&time_stamp, NULL);
 	time_stamp_ms = (time_stamp.tv_sec * 1000) + (time_stamp.tv_usec / 1000);
