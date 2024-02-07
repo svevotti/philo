@@ -15,7 +15,6 @@ void	get_forks(t_philo *philo)
 {
 	if (philo->index == philo->info->n_philo - 1 && philo->info->n_philo != 3)
 	{
-	{
 		pthread_mutex_lock(philo->left_fork);
 		pthread_mutex_lock(philo->right_fork);
 	}
