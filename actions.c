@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   actions.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: smazzari <smazzari@student.42berlin.d      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/12 14:55:46 by smazzari          #+#    #+#             */
-/*   Updated: 2024/01/12 14:55:47 by smazzari         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "philo.h"
 #include <string.h>
 
@@ -25,7 +13,8 @@ void	check_times_eating(t_philo *ptr)
 
 void	get_forks(t_philo *philo)
 {
-	if (philo->index == philo->info->n_philo - 1)
+	if (philo->index == philo->info->n_philo - 1 && philo->info->n_philo != 3)
+	{
 	{
 		pthread_mutex_lock(philo->left_fork);
 		pthread_mutex_lock(philo->right_fork);
