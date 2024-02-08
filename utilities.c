@@ -23,14 +23,14 @@ void	print_action(t_info *info, int philo, char *str)
 		if (ft_strncmp(str, "has died", 8) == 0)
 		{
 			pthread_mutex_lock(info->print);
-			printf("\033[1;31m%lu philosopher %d %s\033[0m\n", time_stamp_ms,
+			printf("\033[1;31m%lu %d %s\033[0m\n", time_stamp_ms,
 				philo, str);
 			pthread_mutex_unlock(info->print);
 		}
 		else
 		{
 			pthread_mutex_lock(info->print);
-			printf("%lu philosopher %d %s\n", time_stamp_ms, philo, str);
+			printf("%lu %d %s\n", time_stamp_ms, philo, str);
 			pthread_mutex_unlock(info->print);
 		}
 	}
