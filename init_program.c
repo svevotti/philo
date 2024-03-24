@@ -1,17 +1,30 @@
 #include "philo.h"
 
+void	think(t_philo *philo)
+{
+	long	duration;
+
+	duration = (philo->info->time_to_die - philo->info->time_to_eat
+			- philo->info->time_to_sleep) / 2;
+	print_action(philo->info, philo->index, "is thinking");
+	do_action(duration);
+}
+
 void	*routine(void *param)
 {
 	t_philo	*ptr;
 	int		terminate_status;
 
 	ptr = (t_philo *)param;
+	if (ptr->index % 2 == 0)
+		do_action((ptr->info->time_to_die - ptr->info->time_to_eat
+				- ptr->info->time_to_sleep) / 2);
 	while (1)
 	{
 		if (eat_spaghetti(ptr) != 0)
 			return (NULL);
 		take_a_nap(ptr);
-		print_action(ptr->info, ptr->index, "is thinking");
+		think(ptr);
 		pthread_mutex_lock(ptr->info->terminate_lock);
 		terminate_status = ptr->info->terminate_threads;
 		pthread_mutex_unlock(ptr->info->terminate_lock);

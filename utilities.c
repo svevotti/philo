@@ -6,7 +6,7 @@ void	do_action(long duration)
 
 	timestamp = get_time_stamp();
 	while (get_time_stamp() - timestamp < duration)
-		usleep(duration / 10);
+		usleep(duration / 100);
 }
 
 void	print_action(t_info *info, int philo, char *str)

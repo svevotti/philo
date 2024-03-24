@@ -13,25 +13,30 @@ void	check_times_eating(t_philo *ptr)
 
 void	get_forks(t_philo *philo)
 {
-	if (philo->index == philo->info->n_philo - 1 && philo->info->n_philo != 3)
+	if (philo->index % 2 == 0)
 	{
-		pthread_mutex_lock(philo->left_fork);
 		pthread_mutex_lock(philo->right_fork);
+		pthread_mutex_lock(philo->left_fork);
 	}
 	else
 	{
-		pthread_mutex_lock(philo->right_fork);
-		if (philo->index == philo->info->n_philo && \
-				philo->count_done_eating % 2 == 1)
-			usleep(100);
 		pthread_mutex_lock(philo->left_fork);
+		pthread_mutex_lock(philo->right_fork);
 	}
 }
 
 void	give_back_forks(t_philo *philo)
 {
-	pthread_mutex_unlock(philo->right_fork);
-	pthread_mutex_unlock(philo->left_fork);
+	if (philo->index % 2 == 0)
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+	}
+	else
+	{
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
+	}
 }
 
 int	eat_spaghetti(t_philo *ptr)
